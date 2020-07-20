@@ -12,11 +12,9 @@ Welcome to the documention of the Alfred Wegener Institute Climate Model AWI-CM3
    :maxdepth: 2
    :caption: Contents:
 
+   before_you_start
+   quickstart
+   pitfalls_and_solutions
 
 
-Contents
-==================
 
-* :ref:`Before you start`
-* :ref:`Quickstart`
-* :ref:`Pitfalls and solutions`
