@@ -3,8 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to AWI-CM3 documentation's documentation!
+AWI-CM3 documentation!
 =================================================
+
+Welcome to the documention of the Alfred Wegener Institute Climate Model AWI-CM3. AWI-CM3 is coupled atmospheric & ocean general circulation model (AOGCM) based on `OpenIFS <https://www.ecmwf.int/en/research/projects/openifs>`_ and `FESOM2 <https://fesom.de/models/fesom20/>`_ and is one possible configuration of the larger `EC-Earth4 <http://www.ec-earth.org/>`_ model framework.
 
 .. toctree::
    :maxdepth: 2
@@ -12,9 +14,9 @@ Welcome to AWI-CM3 documentation's documentation!
 
 
 
-Indices and tables
+Contents
 ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+* :ref:`Before you start`
+* :ref:`Quickstart`
+* :ref:`Pitfalls and solutions`
