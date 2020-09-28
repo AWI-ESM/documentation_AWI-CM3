@@ -4,3 +4,4 @@ Pitfalls and solutions
 **********************
 - You must use 4-digit experiment name, otherwise OpenIFS will be missing certaining input files
 - You will likely want to use fesom salinity restoring = 0. Failing to do so will make your model not fully coupled as sss will be read from file. 
+- Your runscript must contain it's own name as a variable. Example: scriptname=awicm3-tutorial.run
