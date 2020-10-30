@@ -6,11 +6,8 @@ Workfolder contents
 Before the time integration of the model:
 
 +---------------------------+-------------+-------------------------------------------------+
-| File name                 | File type   | Description                                     |
+| File name                 | Type        | Description                                     |
 +===========================+=============+=================================================+
-| cdwavein                  | input       | input file from WAM wave model                  |
-|                           |             | (Apparent surface humidity)                     |
-+---------------------------+-------------+-------------------------------------------------+
 | FESOM.mesh.diag           | input       | output of FESOM2 mesh diagnostics               |
 +---------------------------+-------------+-------------------------------------------------+
 | grids.nc                  | input       | center lon/lat for OASIS3MCT. Note: input file  |
@@ -22,12 +19,84 @@ Before the time integration of the model:
 | areas.nc                  | input       | mesh area for OASIS3MCT. Note: input file       |
 |                           |             | for OIFS but output file for FESOM2             |
 +---------------------------+-------------+-------------------------------------------------+
-| FESOM.x                   | bin         | FESOM2 executable                               |
+| ifsdata                   | input       | folder containing default OIFS gas and          |
+|                           |             | aerosol climatologies                           |
++---------------------------+-------------+-------------------------------------------------+
+| *_MIDYR_CONC.txt          | input       | CMIP5 forcing files (optional CMIP6 via fort.4) |
++---------------------------+-------------+-------------------------------------------------+
+| ICMGG{job_id}INIT         | input       | grid point inital and boundary conditions for   |
+|                           |             | OIFS                                            |
++---------------------------+-------------+-------------------------------------------------+
+| ICMGG{job_id}INIUA        | input       | upper atmosphere inital and boundary conditions |
+|                           |             | for OIFS                                        |
++---------------------------+-------------+-------------------------------------------------+
+| ICMSH{job_id}INIT         | input       | spherical harmonic inital and boundary          |
+|                           |             | conditions for OIFS                             |
++---------------------------+-------------+-------------------------------------------------+
+| rmp_*                     | input       | OASIS3MCT remapping weight files. (optional,    |
+|                           |             | if not present they will be generated on the    |
+|                           |             | fly. This will take some time.)                 |
++---------------------------+-------------+-------------------------------------------------+
+| rtables                   | input       | OIFS grib code tables                           |
++---------------------------+-------------+-------------------------------------------------+
+| wam_grid_tables           | input       | WAM grib code tables                            |
++---------------------------+-------------+-------------------------------------------------+
+| *l_*                      | input       | Ozone cilmatology and old disused inital &      |
+|                           |             | boundary conditions                             |
++---------------------------+-------------+-------------------------------------------------+
+| runoff_maps.nc            | input       | contains river basins and discharge areas       |
++---------------------------+-------------+-------------------------------------------------+
+| cdwavein                  | input       | input file from WAM wave model                  |
+|                           |             | (Apparent surface humidity)                     |
++---------------------------+-------------+-------------------------------------------------+
+| sfcwindin                 | input       | WAM inital wind                                 |
++---------------------------+-------------+-------------------------------------------------+
+| specwavein                | input       | WAM inital temperature                          |
++---------------------------+-------------+-------------------------------------------------+
+| uwavein                   | input       | WAM inital surface roughness                    |
++---------------------------+-------------+-------------------------------------------------+
+| wam_subgrid_0             | input       | Something for WAM, not quite sure..             |
++---------------------------+-------------+-------------------------------------------------+
+| temp, tmp1 tmp2           | input       | used for esm-ksh tools                          |
++---------------------------+-------------+-------------------------------------------------+
+| *red_points.txt           | input       | disused should remove it..                      |
 +---------------------------+-------------+-------------------------------------------------+
 | fort.4                    | ctrl        | OIFS namelists                                  |
 +---------------------------+-------------+-------------------------------------------------+
-| hostfile_srun             | ctrl        | controls the allocation of cores to MPI and OMP |
+| hostfile_srun             | ctrl        | controls the allocation of cores to executables |
+|                           |             | by calling prog* scripts                        |
 +---------------------------+-------------+-------------------------------------------------+
+| hostlist                  | ctrl        | contains list of all MPI tasks and the compute  | 
+|                           |             | node they run on                                |
++---------------------------+-------------+-------------------------------------------------+
+| prog*                     | ctrl        | calling script* files while calculation OpenMP  | |                           |             | settings                                        |
++---------------------------+-------------+-------------------------------------------------+
+| script*                   | ctrl        | calling executalbes with OpenMP settings        |
++---------------------------+-------------+-------------------------------------------------+
+| namcouple                 | ctrl        | controls OASIS3MCT coupling fields, remapping   |
+|                           |             | and timing                                      |
++---------------------------+-------------+-------------------------------------------------+
+| namelist.config           | ctrl        | controls FESOM2 general settings                |
++---------------------------+-------------+-------------------------------------------------+
+| namelist.forcing          | ctrl        | controls FESOM2 forcing settings (not needed)   |
++---------------------------+-------------+-------------------------------------------------+
+| namelist.ice              | ctrl        | controls FESOM2 sea ice settings                |
++---------------------------+-------------+-------------------------------------------------+
+| namelist.oce              | ctrl        | controls FESOM2 sea ocean settings              |
++---------------------------+-------------+-------------------------------------------------+
+| namelist.io               | ctrl        | controls FESOM2 output and diagnostic settings  |
++---------------------------+-------------+-------------------------------------------------+
+| namelist.runoffmapper     | ctrl        | controls runoff mapper settings                 |
++---------------------------+-------------+-------------------------------------------------+
+| wam_namelist              | ctrl        | controls WAM settings                           |
++---------------------------+-------------+-------------------------------------------------+
+| FESOM.x                   | bin         | FESOM2 executable                               |
++---------------------------+-------------+-------------------------------------------------+
+| master.exe                | bin         | OIFS executable                                 |
++---------------------------+-------------+-------------------------------------------------+
+| rnfmap.exe                | bin         | Runoff mapper executable                        |
++---------------------------+-------------+-------------------------------------------------+
+
 
 Additional files after the time integration of the model:
 
@@ -40,21 +109,53 @@ Additional files after the time integration of the model:
 | drhook*                   | log         | debug info from DR_HOOK ECMWF debug tool        |
 |                           |             | controlled via export DR_HOOK*                  |
 +---------------------------+-------------+-------------------------------------------------+
+| ifs.stat                  | log         | OIFS timestep length output                     |
++---------------------------+-------------+-------------------------------------------------+
+| lucia*                    | log         | OASIS3MCT coupling timing information. use      |
+|                           |             | lucia tool to analyise computational balance    |
++---------------------------+-------------+-------------------------------------------------+
+| NODE.001_01               | log         | Very detailed logfile of the OIFS simulation    |
++---------------------------+-------------+-------------------------------------------------+
+| nout.000000               | log         | logfile of the OASIS3MCT interpreting the       |
+| NODE.001_01               | log         | namcouple file                                  |
++---------------------------+-------------+-------------------------------------------------+
 | a2o*                      | output      | intermediate for gen of OASIS3MCT restart files |
 |                           |             | (only if first leg and LRESUME_oasis3mct=0)     |
 +---------------------------+-------------+-------------------------------------------------+
 | A_*                       | output      | intermediate for gen of OASIS3MCT restart files |
 |                           |             | (only if first leg and LRESUME_oasis3mct=0)     |
 +---------------------------+-------------+-------------------------------------------------+
-| *_FESOM_*                 | output      | intermediate for gen of OASIS3MCT restart files |
+| *_fesom_*                 | output      | intermediate for gen of OASIS3MCT restart files |
 |                           |             | (only if first leg and LRESUME_oasis3mct=0)     |
 +---------------------------+-------------+-------------------------------------------------+
-| BLS*                      | restart     | restart file for WAM wave model                 |
+| *.fesom.*                 | output      | FESOM2 output file                              |
 +---------------------------+-------------+-------------------------------------------------+
-| FESOM.${year}.ice*        | restart     | restart file for FESOM2 ice model               |
+| ICMGG{job_id}+000000      | output      | timestep 0 OIFS output not all fields. deleted  |
 +---------------------------+-------------+-------------------------------------------------+
-| FESOM.${year}.oce*        | restart     | restart file for FESOM2 ocean model             |
+| ICMGG{job_id}+{year}{mon} | output      | OIFS gridpoint output                           |
 +---------------------------+-------------+-------------------------------------------------+
-| FESOM.clock               | restart     | restart control file for FESOM2                 |
+| ICMSH{job_id}+{year}{mon} | output      | OIFS spherical harmonic output                  |
++---------------------------+-------------+-------------------------------------------------+
+| ICMUA{job_id}+{year}{mon} | output      | OIFS upper atmosphere output                    |
++---------------------------+-------------+-------------------------------------------------+
+| MPP*                      | output      | WAM wave model output                           |
++---------------------------+-------------+-------------------------------------------------+
+| BLS*                      | restart     | for WAM wave model                              |
++---------------------------+-------------+-------------------------------------------------+
+| LAW*                      | restart     | for WAM wave model                              |
++---------------------------+-------------+-------------------------------------------------+
+| FESOM.${year}.ice*        | restart     | for FESOM2 ice model                            |
++---------------------------+-------------+-------------------------------------------------+
+| FESOM.${year}.oce*        | restart     | for FESOM2 ocean model                          |
++---------------------------+-------------+-------------------------------------------------+
+| FESOM.clock               | restart     | control file for FESOM2                         |
++---------------------------+-------------+-------------------------------------------------+
+| rst*                      | restart     | for OASIS3MCT if run with lag                   |
++---------------------------+-------------+-------------------------------------------------+
+| rcf                       | restart     | control file for OIFS                           |
++---------------------------+-------------+-------------------------------------------------+
+| srf*                      | restart     | for OIFS (one per MPI task)                     |
++---------------------------+-------------+-------------------------------------------------+
+| waminfo                   | restart     | control file for WAM                            |
 +---------------------------+-------------+-------------------------------------------------+
 
