@@ -69,7 +69,8 @@ Before the time integration of the model:
 | hostlist                  | ctrl        | contains list of all MPI tasks and the compute  | 
 |                           |             | node they run on                                |
 +---------------------------+-------------+-------------------------------------------------+
-| prog*                     | ctrl        | calling script* files while calculation OpenMP  | |                           |             | settings                                        |
+| prog*                     | ctrl        | calling script* files while calculation OpenMP  |
+|                           |             | settings                                        |
 +---------------------------+-------------+-------------------------------------------------+
 | script*                   | ctrl        | calling executalbes with OpenMP settings        |
 +---------------------------+-------------+-------------------------------------------------+
