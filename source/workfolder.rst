@@ -118,7 +118,7 @@ Additional files after the time integration of the model:
 | NODE.001_01               | log         | Very detailed logfile of the OIFS simulation    |
 +---------------------------+-------------+-------------------------------------------------+
 | nout.000000               | log         | logfile of the OASIS3MCT interpreting the       |
-| NODE.001_01               | log         | namcouple file                                  |
+|                           |             | namcouple file                                  |
 +---------------------------+-------------+-------------------------------------------------+
 | a2o*                      | output      | intermediate for gen of OASIS3MCT restart files |
 |                           |             | (only if first leg and LRESUME_oasis3mct=0)     |
