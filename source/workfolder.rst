@@ -115,7 +115,7 @@ Additional files after the time integration of the model:
 | lucia*                    | log         | OASIS3MCT coupling timing information. use      |
 |                           |             | lucia tool to analyise computational balance    |
 +---------------------------+-------------+-------------------------------------------------+
-| NODE.001_01               | log         | Very detailed logfile of the OIFS simulation    |
+| NODE.001_01               | log         | very detailed logfile of the OIFS simulation    |
 +---------------------------+-------------+-------------------------------------------------+
 | nout.000000               | log         | logfile of the OASIS3MCT interpreting the       |
 |                           |             | namcouple file                                  |
