@@ -2,7 +2,7 @@
 
 Known errors
 **********************
-- printf: -8: unknown option
+- **printf: -8: unknown option**
 ..  code-block:: bash
 
   {
