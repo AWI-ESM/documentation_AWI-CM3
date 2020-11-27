@@ -5,13 +5,11 @@ Known errors
 - **printf: -8: unknown option**
 ..  code-block:: bash
 
-  {
   /tmp/slurmd/job8770219/slurm_script[73]: eval[73]: eval[393]: printf: -8: unknown option
   /tmp/slurmd/job8770219/slurm_script[73]: eval[73]: eval[393]: printf: -7: unknown option
   /tmp/slurmd/job8770219/slurm_script[73]: eval[73]: eval[393]: printf: -3: unknown option
   /tmp/slurmd/job8770219/slurm_script[73]: eval[73]: eval[393]: printf: -6: unknown option
   Usage: printf [ options ] format [string …]
-  } 
 ..
 
   - **Situation**: This error likely appears when you restart the model after the previous leg did not finish successfully.
