@@ -170,47 +170,28 @@ Detailed description of coupling files and which ones can be generated on the fl
 +---------------------------+---------------------------------------------------------------+
 | File name                 | Properties                                                    |
 +===========================+===============================================================+
-| Remapping files rmp_      | Can be generated on the fly for low resolutions               |
-|                           |                                                               |
-|                           | Do depend on OpenIFS & FESOM2 resolution                      |
-|                           |                                                               |
-|                           | Do depend on number of FESOM2 cores                           |
-|                           |                                                               |
-|                           | Do not depend of number of OpenIFS cores                      |
-|                           |                                                               |
-|                           | Do not depend on hpc system                                   |
-|                           |                                                               |
-|                           | Shall be linked in if possible to save time.                  |
-|                           |                                                               |
-|                           | Stay constant throughout an experiment                        |
+| Remapping files rmp_      | - Can be generated on the fly for low resolutions             |
+|                           | - Do depend on OpenIFS & FESOM2 resolution                    |
+|                           | - Do depend on number of FESOM2 cores                         |
+|                           | - Do not depend of number of OpenIFS cores                    |
+|                           | - Do not depend on hpc system                                 |
+|                           | - Shall be linked in if possible to save time.                |
+|                           | - Stay constant throughout an experiment                      |
 +---------------------------+---------------------------------------------------------------+
-| restart files rst         | Can be generated only in lresume_oasis3mct:false runs         |
-|                           |                                                               |
-|                           | If lresume_oasis3mct:true they have to be linked in           |
-|                           |                                                               |
-|                           | Do depend on OpenIFS & FESOM2 resolution                      |
-|                           |                                                               |
-|                           | Do depend on number of FESOM2 cores                           |
-|                           |                                                               |
-|                           | Do not depend of number of OpenIFS cores                      |
-|                           |                                                               |
-|                           | Do not depend on hpc system                                   |
-|                           |                                                               |
-|                           | Shall be linked in if possible to save time.                  |
-|                           |                                                               |
-|                           | Change throughout an experiment and are part of the restart   |
+| restart files rst         | - Can be generated only in lresume_oasis3mct:false runs       |
+|                           | - If lresume_oasis3mct:true they have to be linked in         |
+|                           | - Do depend on OpenIFS & FESOM2 resolution                    |
+|                           | - Do depend on number of FESOM2 cores                         |
+|                           | - Do not depend of number of OpenIFS cores                    |
+|                           | - Do not depend on hpc system                                 |
+|                           | - Shall be linked in if possible to save time.                |
+|                           | - Change throughout an experiment and are part of the restart |
 +---------------------------+---------------------------------------------------------------+
-| masks, grids, areas.nc    | Can not be generated at runtime                               |
-|                           |                                                               |
-|                           | Do depend on OpenIFS & FESOM2 resolution                      |
-|                           |                                                               |
-|                           | Do not depend on number of FESOM2 cores                       |
-|                           |                                                               |
-|                           | Do not depend of number of OpenIFS cores                      |
-|                           |                                                               |
-|                           | Do not depend on hpc system                                   |
-|                           |                                                               |
-|                           | Nedd to be linked in                                          |
-|                           |                                                               |
-|                           | Stay constant throughout an experiment                        |
+| masks, grids, areas.nc    | - Can not be generated at runtime                             |
+|                           | - Do depend on OpenIFS & FESOM2 resolution                    |
+|                           | - Do not depend on number of FESOM2 cores                     |
+|                           | - Do not depend of number of OpenIFS cores                    |
+|                           | - Do not depend on hpc system                                 |
+|                           | - Nedd to be linked in                                        |
+|                           | - Stay constant throughout an experiment                      |
 +---------------------------+---------------------------------------------------------------+
