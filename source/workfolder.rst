@@ -1,11 +1,11 @@
-.. _chap_Workfolder
+.. _chap_workfolder
 
 Workfolder contents
-************
+*******************
 
-+++++++++++++++
-Before the time integration of the model:
-+++++++++++++++
+########################################
+Before the time integration of the model
+########################################
 
 +---------------------------+-------------+-------------------------------------------------+
 | File name                 | Type        | Description                                     |
@@ -100,9 +100,9 @@ Before the time integration of the model:
 | rnfmap.exe                | bin         | Runoff mapper executable                        |
 +---------------------------+-------------+-------------------------------------------------+
 
-##############
-Additional files after the time integration of the model:
-##############
+########################################################
+Additional files after the time integration of the model
+########################################################
 
 +---------------------------+-------------+-------------------------------------------------+
 | debug.notroot*            | log         | OASIS3MCT logfile mostly empty                  |
@@ -163,9 +163,9 @@ Additional files after the time integration of the model:
 | waminfo                   | restart     | control file for WAM                            |
 +---------------------------+-------------+-------------------------------------------------+
 
-##############
+#################################################################################
 Detailed description of coupling files and which ones can be generated on the fly
-##############
+#################################################################################
 
 +---------------------------+---------------------------------------------------------------+
 | File name                 | Properties                                                    |
