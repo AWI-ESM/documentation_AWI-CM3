@@ -7,9 +7,9 @@ In order to run AWI-CM3 a few steps must be taken that will be outlined here. So
 
 Licencing
 =========
-OpenIFS must be licenced by ECMWF. The licence is free of charge but will only be issued to research institutes & Universities. https://confluence.ecmwf.int/display/OIFS/Request+OpenIFS+license
-FESOM2 is available under GPL-2.0 and requires no further action
-OASIS4 is available under LGPL and requires no registration http://www.cerfacs.fr/oa4web/oasis3-mct_4.0/oasis3mct_UserGuide/node5.html
+- OpenIFS must be licenced by ECMWF. The licence is free of charge but will only be issued to research institutes & Universities. https://confluence.ecmwf.int/display/OIFS/Request+OpenIFS+license
+- FESOM2 is available under GPL-2.0 and requires no further action
+- OASIS4 is available under LGPL and requires no registration http://www.cerfacs.fr/oa4web/oasis3-mct_4.0/oasis3mct_UserGuide/node5.html
 
 Repository registration
 =======================
