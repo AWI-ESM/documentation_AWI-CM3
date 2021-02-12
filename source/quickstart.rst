@@ -3,15 +3,11 @@
 Step by step
 ************
 
-####################################
-esm_tools (python tools) (temporary)
-####################################
+########################
+esm_tools (python tools)
+########################
 
-1. Clone and install esm_tools (as in the `documentation <https://esm-tools.readthedocs.io/>`__)
-2. In esm_tools package, checkout the feature/awicm3 branch (cd ~/esm_tools; git checkout feature/awicm3)
-3. Clone the esm_runscripts package (for example, in your home directory: git clone https://github.com/esm-tools/esm_runscripts.git)
-4. Checkout the feature/awicm3 branch in the esm_runscripts package (cd ~/esm_runscripts; git checkout feature/awicm3). Note that in the past, we used to checkout the develop branch, but because we don't want to interfere with the develop branch anymore, we created a feature/awicm3 branch also for esm_runscripts).
-5. In esm_runscripts perform a local pip installation (cd ~/esm_runscripts; pip install -e .)
+TBA (changes too quickly till release 5.1 of esm_tools to include here)
 
 ######################
 esm-master (ksh tools)
