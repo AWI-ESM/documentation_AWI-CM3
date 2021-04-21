@@ -187,7 +187,7 @@ Detailed description of coupling files and which ones can be generated on the fl
 |                           | - Shall be linked in if possible to save time.                |
 |                           | - Change throughout an experiment and are part of the restart |
 +---------------------------+---------------------------------------------------------------+
-| masks, grids, areas.nc    | - Can not be generated at runtime                             |
+| masks, grids, areas.nc    | - OpenIFS part can not be generated at runtime                |
 |                           | - Do depend on OpenIFS & FESOM2 resolution                    |
 |                           | - Do not depend on number of FESOM2 cores                     |
 |                           | - Do not depend of number of OpenIFS cores                    |
