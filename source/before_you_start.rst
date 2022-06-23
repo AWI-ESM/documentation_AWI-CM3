@@ -14,7 +14,7 @@ Licencing
 
 Repository registration
 =======================
-Since OpenIFS can not be distributed without lincence from the ECMWF, registration with https://gitlab.dkrz.de is required to obtain all required source code. Membership to the repositories can be granted by AWI staff (Jan.Streffing@awi.de, Christian.Stepanek@awi.de or Dmitry.Sidorenko@awi.de), provided you are a member of an `OpenIFS licenced institute <https://confluence.ecmwf.int/display/OIFS/OpenIFS+licensed+institutions>`_
+Since OpenIFS can not be distributed without lincence from the ECMWF, registration with https://gitlab.dkrz.de is required to obtain all required source code. Membership to the repositories can be granted by AWI staff (Jan.Streffing@awi.de, Paul.Gierz@awi.de, Christian.Stepanek@awi.de or Dmitry.Sidorenko@awi.de), provided you are a member of an `OpenIFS licenced institute <https://confluence.ecmwf.int/display/OIFS/OpenIFS+licensed+institutions>`_
 
 Supported HPCs
 ==============
