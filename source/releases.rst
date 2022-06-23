@@ -2,6 +2,7 @@
 
 Releases
 ******
+Full documentation of version 3.0 is published at: https://doi.org/10.5194/egusphere-2022-32. The figures shown here in updated form for subsequent releases are first included and, explained and interpreted therein.
 
 AWI-CM3 v3.1
 =========
@@ -11,5 +12,4 @@ AWI-CM3 v3.1
 
 AWI-CM3 v3.0
 =========
-.. raw:: html
-   :file: releases/3.0/display.html
+https://doi.org/10.5194/egusphere-2022-32
