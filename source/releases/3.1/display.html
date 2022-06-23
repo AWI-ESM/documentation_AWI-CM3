@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+  font-family: "Lato", sans-serif;
+}
+
+/* Fixed sidenav, full height */
+.sidenav {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Style the sidenav links and the dropdown button */
+.sidenav a, .dropdown-btn {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+/* On mouse-over */
+.sidenav a:hover, .dropdown-btn:hover {
+  color: #f1f1f1;
+}
+
+/* Main content */
+.main {
+  margin-left: 250px; /* Same as the width of the sidenav */
+  font-size: 20px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+/* Add an active class to the active dropdown button */
+.active {
+  background-color: green;
+  color: white;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+  display: none;
+  background-color: #262626;
+  padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+  float: right;
+  padding-right: 8px;
+}
+
+/* Some media queries for responsiveness */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 80%;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+  padding: 2px 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="sidenav">
+  <button class="dropdown-btn">Model overview 
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    
+    <a href="#coupling_overview">Oasis fields</a>
+    
+  </div>
+
+  <button class="dropdown-btn">Spinup run
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    
+    <a href="#spin_rad_budget">Spinup radiation budget</a>
+    <a href="#spin_hovm_temp">Spinup temperature hovmöller</a>
+    
+  </div>
+  
+  <button class="dropdown-btn">Historic run 
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    <a href="#CMPI">Model performance indices</a>
+    <a href="#sea_ice_thickness">Sea ice thickness</a>
+    <a href="#sea_ice_extent">Sea ice extent</a>
+    <a href="#weddell">Weddell sea</a>
+    <a href="#fluxes">Coupling fluxes</a>
+    <a href="#zonal">Zonal means</a>
+    <a href="#ocean_temp">Ocean temperature</a>
+    <a href="#ocean_salt">Ocean salinity</a>
+    <a href="#enso">ENSO</a>
+    <a href="#amoc">AMOC</a>
+    <a href="#warming">Global warming</a>
+  </div>
+  
+</div>
+
+
+
+
+
+
+
+
+<div class="main">
+  <h1> AWI-CM3 release diagnostics</h1>
+
+    <div class="card" id="coupling_overview">
+        <div class="container">
+            <h5>Model components and coupling fields</h5>
+        </div>
+        <a href="./fig01.png" target="_blank">
+        <img src="./fig01.png" alt="Avatar" style="width:100%">
+        </a>
+      </div>
+
+    <div class="card" id="spin_rad_budget">
+        <div class="container">
+            <h5>Spinup radiation budget</h5>
+        </div>
+        <a href="./radiation_budget.png" target="_blank">
+        <img src="./radiation_budget.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./Hovmoeller_temp.png" target="_blank">
+        <img src="./Hovmoeller_temp.png" alt="Avatar" style="width:49%">
+        </a>
+      </div>
+      
+      <div class="card" id="CMPI">
+        <div class="container">
+            <h5>Climate model performance indicies</h5>
+        </div>
+        <a href="./CMPI.png" target="_blank">
+        <img src="./CMPI.png" alt="Avatar" style="width:85%">
+        </a>
+      </div>
+      
+      <div class="card" id="sea_ice_thickness">
+        <div class="container">
+            <h5>Sea ice thickness</h5>
+        </div>
+        <a href="./pi-control_March_NH_sea_ice_thickness.png" target="_blank">
+        <img src="./pi-control_March_NH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        <a href="./pi-control_September_NH_sea_ice_thickness.png" target="_blank">
+        <img src="./pi-control_September_NH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        <a href="./pi-control_September_SH_sea_ice_thickness.png" target="_blank">
+        <img src="./pi-control_September_SH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        <a href="./pi-control_March_SH_sea_ice_thickness.png" target="_blank">
+        <img src="./pi-control_March_SH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        
+        <a href="./historic_March_NH_sea_ice_thickness.png" target="_blank">
+        <img src="./historic_March_NH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        <a href="./historic_September_NH_sea_ice_thickness.png" target="_blank">
+        <img src="./historic_September_NH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        <a href="./historic_September_SH_sea_ice_thickness.png" target="_blank">
+        <img src="./historic_September_SH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        <a href="./historic_March_SH_sea_ice_thickness.png" target="_blank">
+        <img src="./historic_March_SH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        
+        <a href="./GIOMAS_March_NH_sea_ice_thickness.png" target="_blank">
+        <img src="./GIOMAS_March_NH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        <a href="./GIOMAS_September_NH_sea_ice_thickness.png" target="_blank">
+        <img src="./GIOMAS_September_NH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        <a href="./GIOMAS_September_SH_sea_ice_thickness.png" target="_blank">
+        <img src="./GIOMAS_September_SH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+        <a href="./GIOMAS_March_SH_sea_ice_thickness.png" target="_blank">
+        <img src="./GIOMAS_March_SH_sea_ice_thickness.png" alt="Avatar" style="width:24.5%">
+        </a>
+      </div>
+      
+      <div class="card" id="sea_ice_extent_timeseries">
+        <div class="container">
+            <h5>Sea ice extent</h5>
+        </div>
+        <a href="./sea_ice_extent_comparison.png" target="_blank">
+        <img src="./sea_ice_extent_comparison.png" alt="Avatar" style="width:100%">
+        </a>
+      </div>
+      
+      <div class="card" id="weddell">
+        <div class="container">
+            <h5>Weddell sea</h5>
+        </div>
+        <a href="./a_ice_SH.png" target="_blank">
+        <img src="./a_ice_SH.png" alt="Avatar" style="width:32%">
+        </a>
+        <a href="./MLD2_SH.png" target="_blank">
+        <img src="./MLD2_SH.png" alt="Avatar" style="width:32%">
+        </a>
+        <a href="./salt_Weddell_abs_profile.png" target="_blank">
+        <img src="./salt_Weddell_abs_profile.png" alt="Avatar" style="width:32%">
+        </a>
+      </div>
+      
+      <div class="card" id="fluxes">
+        <div class="container">
+            <h5>Atmosphere biases</h5>
+        </div>
+        <a href="./t2m_vs_ERA5.png" target="_blank">
+        <img src="./t2m_vs_ERA5.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./precip_vs_GPCP.png" target="_blank">
+        <img src="./precip_vs_GPCP.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./ssr_vs_ceres.png" target="_blank">
+        <img src="./ssr_vs_ceres.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./str_vs_ceres.png" target="_blank">
+        <img src="./str_vs_ceres.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./ssrd_vs_ceres.png" target="_blank">
+        <img src="./ssrd_vs_ceres.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./tcc_vs_MODIS.png" target="_blank">
+        <img src="./tcc_vs_MODIS.png" alt="Avatar" style="width:49%">
+        </a>
+      </div>
+      
+      <div class="card" id="zonal">
+        <div class="container">
+            <h5>Zonal mean biases</h5>
+        </div>
+        <a href="./tzonal_mean_vs_ERA5.png" target="_blank">
+        <img src="./tzonal_mean_vs_ERA5.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./uzonal_mean_vs_ERA5.png" target="_blank">
+        <img src="./uzonal_mean_vs_ERA5.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./AWI-CM3-qbo.png" target="_blank">
+        <img src="./AWI-CM3-qbo.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./ERA5-qbo.png" target="_blank">
+        <img src="./ERA5-qbo.png" alt="Avatar" style="width:49%">
+        </a>
+      </div>
+      
+      <div class="card" id="ocean_temp">
+        <div class="container">
+            <h5>Ocean temperature bias</h5>
+        </div>
+        <a href="./0m-temp-phc3.png" target="_blank">
+        <img src="./0m-temp-phc3.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./100m-temp-phc3.png" target="_blank">
+        <img src="./100m-temp-phc3.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./1000m-temp-phc3.png" target="_blank">
+        <img src="./1000m-temp-phc3.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./4000m-temp-phc3.png" target="_blank">
+        <img src="./4000m-temp-phc3.png" alt="Avatar" style="width:49%">
+        </a>
+      </div>
+      
+      <div class="card" id="ocean_salt">
+        <div class="container">
+            <h5>Salinity bias</h5>
+        </div>
+        <a href="./0m-salt-phc3.png" target="_blank">
+        <img src="./0m-salt-phc3.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./100m-salt-phc3.png" target="_blank">
+        <img src="./100m-salt-phc3.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./1000m-salt-phc3.png" target="_blank">
+        <img src="./1000m-salt-phc3.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./4000m-salt-phc3.png" target="_blank">
+        <img src="./4000m-salt-phc3.png" alt="Avatar" style="width:49%">
+        </a>
+      </div>
+      
+      <div class="card" id="enso">
+        <div class="container">
+            <h5>ENSO</h5>
+        </div>
+        <a href="./HIST_enso_eof_corr.png" target="_blank">
+        <img src="./HIST_enso_eof_corr.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./HIST_enso_Nino34_box_norm_psd.png" target="_blank">
+        <img src="./HIST_enso_Nino34_box_norm_psd.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./HIST_Nino34_enso_box_index.png" target="_blank">
+        <img src="./HIST_Nino34_enso_box_index.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./HadISST_Nino34_enso_box_index.png" target="_blank">
+        <img src="./HadISST_Nino34_enso_box_index.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./HIST_Nino34_enso_temperature_distribution.png" target="_blank">
+        <img src="./HIST_Nino34_enso_temperature_distribution.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./HadISST_Nino34_enso_temperature_distribution.png" target="_blank">
+        <img src="./HadISST_Nino34_enso_temperature_distribution.png" alt="Avatar" style="width:49%">
+        </a>
+      </div>
+      
+      <div class="card" id="amoc">
+        <div class="container">
+            <h5>AMOC</h5>
+        </div>
+        <a href="./plot_pict_amoc_amoc_y1990-2014.png" target="_blank">
+        <img src="./plot_pict_amoc_amoc_y1990-2014.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./plot_hist_amoc_amoc_y1990-2014.png" target="_blank">
+        <img src="./plot_hist_amoc_amoc_y1990-2014.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./plot_spin_amoc_timeseries_amoc_timeseries.png" target="_blank">
+        <img src="./plot_spin_amoc_timeseries_amoc_timeseries.png" alt="Avatar" style="width:95%">
+        </a>
+        </a>
+        <a href="./plot_hist_amoc_timeseries_amoc_timeseries.png" target="_blank">
+        <img src="./plot_hist_amoc_timeseries_amoc_timeseries.png" alt="Avatar" style="width:95%">
+        </a>
+      </div>
+      
+      <div class="card" id="warming">
+        <div class="container">
+            <h5>Global warming</h5>
+        </div>
+        <a href="./T2M_hist-pict.png" target="_blank">
+        <img src="./T2M_hist-pict.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./T2M_hist-pict_corrected.png" target="_blank">
+        <img src="./T2M_hist-pict_corrected.png" alt="Avatar" style="width:49%">
+        </a>
+        <a href="./temp_hist-pict.png" target="_blank">
+        <img src="./temp_hist-pict.png" alt="Avatar" style="width:49%">
+        </a>
+        </a>
+        <a href="./precip_hist-pict.png" target="_blank">
+        <img src="./precip_hist-pict.png" alt="Avatar" style="width:49%">
+        </a>
+      </div>
+      
+      
+</div>
+
+
+<script>
+/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+  this.classList.toggle("active");
+  var dropdownContent = this.nextElementSibling;
+  if (dropdownContent.style.display === "block") {
+  dropdownContent.style.display = "none";
+  } else {
+  dropdownContent.style.display = "block";
+  }
+  });
+}
+</script>
+
+</body>
+</html> 
