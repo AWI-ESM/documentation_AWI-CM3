@@ -49,3 +49,70 @@ Steps towards the ``rmp_`` files:
 - Copy all ``rmp_`` files into the respective pool dir folder (e.g. ``input/oasis/cy43r3/{OIFS_RES}-${FESOM_RES}/${FESOM_DIST}``).
 - Start a coupled simulation.
 
+
+Select an SSP or RCP scenario
+=========
+CMIP6
+---------
+Control is possible through the namelist file fort.4. Inside you will find the namelist NAERAD, which contains the options for CMIP5 and CMIP6 greenhouse gas forcing. To activate CMIP6 forcing set the logic switch ``LCMIP6 = .true.``. When NCMIPFIXYR is set to a value >0, it is interpreted as a fix forcing year. In the example below we use constant 1850 GHG forcing. If NCMIPFIXYR=0 the actual model year is used, and forcing changes from year to year. Note, that currently only greenhouse gases and solar radiation are set through this namelist. Work on the implementation of controlable anthopogenic aerosols is still ongoing (status: 30th of June 2022).
+
+.. code-block:: Fortran
+   
+   &NAERAD
+      LCMIP6 = .true.
+      CMIP6DATADIR = 'PATH_TO_CMIP6_POOL'
+      NCMIPFIXYR = 1850
+      SSPNAME = 'historical'
+      
+Historic forcing is available for the years 1850 to 2014.
+      
+.. code-block:: Fortran
+   
+   &NAERAD
+      LCMIP6 = .true.
+      CMIP6DATADIR = 'PATH_TO_CMIP6_POOL'
+      NCMIPFIXYR = 0
+      SSPNAME = 'historical'
+      
+Available SSPs are: ``SSP1-1.9``, ``SSP1-2.6``, ``SSP2-4.5``, ``SSP3-7.0``, ``SSP3-LowNTCF``, ``SSP4-3.4``, ``SSP4-6.0``, ``SSP4-6.0``, ``SSP5-3.4-OS``, ``SSP5-8.5``. Covered years are 2015 to 2100.
+
+.. code-block:: Fortran
+   
+   &NAERAD
+      LCMIP6 = .true.
+      CMIP6DATADIR = 'PATH_TO_CMIP6_POOL'
+      NCMIPFIXYR = 0
+      SSPNAME = 'SSP3-7.0'
+
+The model also supports one percent increase per year and sudden four times incease of CO2 experiments through the additional logic switches ``L1PCTCO2`` and ``LA4XCO2``. The base value from which the the increase starts is set via ``NCMIPFIXYR``.
+
+.. code-block:: Fortran
+   
+   &NAERAD
+      LCMIP6 = .true.
+      CMIP6DATADIR = 'PATH_TO_CMIP6_POOL'
+      NCMIPFIXYR = 1850
+      SSPNAME = 'historical'
+      L1PCTCO2 = 'true'
+      
+For a more detailed look at the use of these forcing consult the source code file ``src/ifs/climate/updrgas.F90``
+
+CMIP5
+--------
+Control is analogous to CMIP6 but we use ``LCMIP5``, ``CMIP5DATADIR``, and ``NRCP`` instead. Avaiable RCP are: 
+
+.. code-block:: Fortran
+
+    SELECT CASE (NRCP)
+    CASE (0)
+      FILENAME='ghg_histo.txt'
+    CASE (1)
+      FILENAME='ghg_rcp3PD.txt'
+    CASE (2)
+      FILENAME='ghg_rcp45.txt'
+    CASE (3)
+      FILENAME='ghg_rcp60.txt'
+    CASE (4)
+      FILENAME='ghg_rcp85.txt'
+
+For a more detailed look at the use of these forcing consult the source code file ``src/ifs/climate/updrgas.F90``
