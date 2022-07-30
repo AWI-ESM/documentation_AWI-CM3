@@ -116,3 +116,11 @@ Control is analogous to CMIP6 but we use ``LCMIP5``, ``CMIP5DATADIR``, and ``NRC
       FILENAME='ghg_rcp85.txt'
 
 For a more detailed look at the use of these forcing consult the source code file ``src/ifs/climate/updrgas.F90``
+
+Change the number of vertical levels for pressure level output of OpenIFS
+=========
+Output in controlled via `XIOS <https://forge.ipsl.jussieu.fr/ioserver>`_. The pressure levels onto which the data is interpolated from model levels is set in ``axis_def.xml``. In principle two options exist. Changing the number of levels for all 3D pressue level output fields and changing the number of levels only for some output fields.
+
+For all fields
+---------
+
