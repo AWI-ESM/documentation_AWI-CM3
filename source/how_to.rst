@@ -132,4 +132,26 @@ For select fields
 
 For selective fitting, in the ``<axis id="pressure_levels_zoom"`` section, you can make a sub-selection of the levels previously defined in the ``<axis id="pressure_levels"`` section. In the existing example three layers are selected: ``<zoom_axis index="(0,2)[10 11 12]" />``. To write a field on this reduced vertical domain you have to define a new grid in ``grid_def.xml``, specifying as domain ``pressure_levels_zoom`` instead of ``pressure_levels``. With this new grid you go to ``file_def.xml`` and define a new file (copy paste from ``pressure level`` output to ``pressure level output zoom``, and select the new grid). Then you delete the variables that should not be written on all levels from the pressure level output and insert them at pressure level output zoom.
 
+Control the Orbital Parameters
+=========
+
+The orbital parameters (eccentricity, obliquity, and longitude of perihelion) can be controlled through the namelist ``NAMORB`` inside the ``fort.4`` file. For detailes of the implementaion, consider looking at yomorb.F90 and su0phy.F90.  Controllable orbital parameters are turned on with the logic swtich: ``LCORBMD=true``, which is turned off by default. There are then three modes with which the orbital parameters can be controlled.
+
+- Under ``ORBMODE=variable_year`` mode the orbital parameters are calculated according to Berger et al. 1978 for the current year of the simulation. This is the default. The calculation can be considered reliable within ~+-1 million years of the present.
+- Under ``ORBMODE=fixed_year`` mode the orbital parameters are calculated according to Berger et al. 1978 for the fixed year set by the namelist variable ``ORBIY``. If you choose fixed year but set no year, the default is 1950.
+- Under ``fixed_parameters`` you have manual control over the parameters ``ORBECCEN``, ``ORBOBLIQ`` and ``ORBMVELP``. If you choose fixed parameters but set no parameters, the default ones are for 1950.
+
+Example for manual control:
+
+.. code-block:: Fortran
+
+   &NAMORB
+      LCORBMD = true
+      ORBMODE = 'fixed_parameters'
+      ORBECCEN = 0.016715
+      ORBOBLIQ = 23.4441
+      ORBMVELP = 102.7
+      
+
+
 
