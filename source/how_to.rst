@@ -132,7 +132,7 @@ For select fields
 
 For selective fitting, in the ``<axis id="pressure_levels_zoom"`` section, you can make a sub-selection of the levels previously defined in the ``<axis id="pressure_levels"`` section. In the existing example three layers are selected: ``<zoom_axis index="(0,2)[10 11 12]" />``. To write a field on this reduced vertical domain you have to define a new grid in ``grid_def.xml``, specifying as domain ``pressure_levels_zoom`` instead of ``pressure_levels``. With this new grid you go to ``file_def.xml`` and define a new file (copy paste from ``pressure level`` output to ``pressure level output zoom``, and select the new grid). Then you delete the variables that should not be written on all levels from the pressure level output and insert them at pressure level output zoom.
 
-Control the Orbital Parameters
+Control orbital parameters
 =========
 
 The orbital parameters (eccentricity, obliquity, and longitude of perihelion) can be controlled through the namelist ``NAMORB`` inside the ``fort.4`` file. For detailes of the implementaion, consider looking at yomorb.F90 and su0phy.F90.  Controllable orbital parameters are turned on with the logic swtich: ``LCORBMD=true``, which is turned off by default. There are then three modes with which the orbital parameters can be controlled.
