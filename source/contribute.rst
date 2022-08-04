@@ -7,7 +7,7 @@ AWI-CM3 is assembled on the fly from the various git repositories of the constit
 
 Personal changes
 ----------------
-If you want to work with AWI-CM3 scientifically, and need to make small modifications to the model or one of it's components in order to do so, the recommendation is to start from the latest tagged version. You will receive a well tested model, that was tuned for one or two major model resolution, which is stable in time. No one else will modify your model version. 
+If you want to work with AWI-CM3 scientifically, and need to make small modifications to the model or one of it's components in order to do so, the recommendation is to start from the latest tagged version. You will receive a well tested model, that was tuned for one or two major model resolutions, which is stable in time. No one else will modify your model version. 
 
 In practice you create a git branch based on the tagged version, use it, and then move on. For example like this:
 
