@@ -15,6 +15,7 @@ Welcome to the documention of the Alfred Wegener Institute Climate Model AWI-CM3
    before_you_start
    quickstart
    releases
+   contribute
    how_to
    workfolder
    nice_to_know
