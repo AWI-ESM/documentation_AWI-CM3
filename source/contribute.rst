@@ -37,8 +37,6 @@ If you want to do model development work on AWI-CM3, and you want your features 
 
 You will receive the latest version of all model components, including features by colleagues that may or may not work fully. While this can be a bit of a hassle, continuous integration should keep the worst errors at bay. Once you have finished developing and testing your feature, you merge back into the master branch. 
 
-Eventually the master branch will have so many or such important new features merged back, that we decide to make a new model version out of the master branch. A prep-release branch will be created, the model might be retuned if necessary, and a standard set of tests and diagnostics will be run: https://github.com/AWI-CM3/release_evaluation_tool
-
 .. code-block:: Bash
    
   master
@@ -47,4 +45,6 @@ Eventually the master branch will have so many or such important new features me
   v3.0
   v3.1
   
-*If you want your feature to be used in the long term, this is not the best way to contribute, instead look at the personal changes section.*
+Eventually the master branch will have so many or such important new features merged back, that we decide to make a new model version out of the master branch. A prep-release branch will be created, the model might be retuned if necessary, and a standard set of climate simulations and diagnostics will be run: https://github.com/AWI-CM3/release_evaluation_tool
+  
+*If you want your feature to be used for you next paper starting next Monday, this is not the best way to contribute, instead look at the personal changes section.*
