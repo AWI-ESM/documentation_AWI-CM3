@@ -8,7 +8,7 @@
 #   python package climlab.
 #2. The insolation for openIFS (file atm_remapped_1m_tisr_1m_1850-1850.nc, monthly means)
 #   is plotted as is from the model output. The data stems from a simulation provided by
-#   Jan Streffing.
+#   Jan Streffing, see https://awi-cm3-documentation.readthedocs.io/en/latest/releases.html#awi-cm3-v3-1.
 #3. The insolation for ECHAM6 (file mpiesm_PI_ctrl_ham_CMIP6_output_echam6_echamday_1850_srad0d.nc,
 #   daily means) is plotted as is from the model output. The data stems from the control run
 #   performed for PMIP4 Last Interglacial simulation (Scussolini et al., 2019;
