@@ -153,4 +153,13 @@ Example for manual control:
       ORBMVELP = 102.7
       
 
+Comparison of PI (1850) insolation for various relevant models.
+---------------------------------------------------------------
+Differences between ECHAM6 and openIFS generated insolation can be deemed negligibly small. There is an overall offset of both ECHAM6 and openIFS with respect to the insolation computed from the PMIP4 PI orbit settings - that question may deserve further investigation. Note that ECHAM6 computes their modern insolation based on an internal orbit solution, i.e. the orbital parameters are never explicitly provided to the model as a forcing.
+![insolation based on PMIP4 orbital parameters, computed based on climlab](https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1/insolation_absolute_PI_PMIP4.png?raw=true)
+![openIFS computed PI insolation, monthly means](https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1/insolation_absolute_PI_openIFS.png?raw=true)
+![ECHAM6 computed PI insolation, daily means](https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1/insolation_absolute_PI_ECHAM6_daily.png?raw=true)
+![ECHAM6 computed PI insolation, monthly means, interpolated to openIFS grid](https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1/insolation_absolute_PI_ECHAM6_monthly.png?raw=true)
+![anomaly of PI insolation, openIFS minus ECHAM6](https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1/insolation_anomaly_PI_openIFS-ECHAM6_monthly.png?raw=true)
 
+Files towards generation of the plots above are available at https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1
