@@ -159,4 +159,19 @@ Example for manual control:
       ORBMVELP = 102.7
       
 
+In order to have esm-tools create an openIFS namelist of that form one can adjust the simulation YAML. The following example would let openIFS compute top of the atmosphere insolation based on an LIG orbit whose parameters are as defined for PMIP4:
+
+.. code-block:: yaml
+
+   oifs:
+       add_namelist_changes:
+           fort.4:
+               NAMORB:
+                   LCORBMD: TRUE
+                   ORBMODE: 'fixed_parameters'
+                   ORBECCEN: 0.039378
+                   ORBOBLIQ: 24.040
+                   ORBMVELP: 275.41
+
+The resulting anomaly of top of the atmosphere insolation shows the expected anomalies across latitudes over time:
 
