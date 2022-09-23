@@ -16,7 +16,7 @@ Changes to previous version
 - Putting melt pond albedo on better physical basis `#89 <https://github.com/AWI-CM3/project_management/issues/89>`_
 - Gradient of surface sensible heat flux / wind speed vs (2m air temp - sea ice surf temp) `#90 <https://github.com/AWI-CM3/project_management/issues/90>`_
 - Ocean current feedback coupling `#91 <https://github.com/AWI-CM3/project_management/issues/91>`_
-- Coupling of mass and heat flux of snow falling only icesheets `#96 <https://github.com/AWI-CM3/project_management/issues/96>`_
+- Coupling of mass and heat flux of snow falling on icesheets `#96 <https://github.com/AWI-CM3/project_management/issues/96>`_
 
 
 .. raw:: html
