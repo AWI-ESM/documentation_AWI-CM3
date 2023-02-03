@@ -47,13 +47,15 @@ Steps towards the ``rmp_`` files:
 - Go to ``awicm-3.1/oasis/examples/test_interpolation``
 - Add your ``areas.nc, grids.nc, masks.nc`` files to ``awicm-3.1/oasis/examples/test_interpolation/data_frontiers``
 - Modify the ``awicm-3.1/oasis/examples/test_interpolation/run_frontiersinterp.sh`` to add your machine, if it's not included already.
--  Extract the first of the ``GAUSWGT`` couplings (FESOM->OIFS) from the namcouple in your work folder where you generated the ``BICUBIC`` ``rmp_`` files.
-- Create a namcouple containing only this one remapping in ``awicm-3.1/oasis/examples/test_interpolation/data_frontiers`` For an example, see: ``awicm-3.1/oasis/examples/test_interpolation/data_frontiers/namcouple_feom_A160_gauswgt``
-- Configure `awicm-3.1/oasis/examples/test_interpolation/run_frontiersinterp.sh` to generate this remapping with OpenMP parallelization.
-- Generate the first GAUSWGT remapping by starting ``run_frontiersinterp.sh`` on the batch queue.
-- Go to Step 9 and repeat for second ``GAUSWGT`` remapping (Runoff-mapper -> FESOM).
+- Extract the ``GAUSWGT`` couplings (FESOM->OIFS) from the namcouple in your work folder where you generated the ``BICUBIC`` ``rmp_`` files.
+- Create one namcouple for every remapping in direction at ``awicm-3.1/oasis/examples/test_interpolation/data_frontiers`` For an example, see: ``awicm-3.1/oasis/examples/test_interpolation/data_frontiers/namcouple_feom_A160_gauswgt``
+- Configure `awicm-3.1/oasis/examples/test_interpolation/run_frontiersinterp.sh` to generate these remappings with MPI and OpenMP parallelization.
+- Generate the GAUSWGT remappings by starting ``run_frontiersinterp.sh`` on the batch queue.
 - Copy all ``rmp_`` files into the respective pool dir folder (e.g. ``input/oasis/cy43r3/{OIFS_RES}-${FESOM_RES}/${FESOM_DIST}``).
-- Start a coupled simulation.
+- Start a day long coupled simulation with oasis ``lresume=false`` to generate oasis restart files
+- Copy oasis restart files into pool dir
+- Start full speed simulation with oasis ``lresume=true`` to generate oasis restart files
+
 
 
 Select an SSP or RCP scenario
