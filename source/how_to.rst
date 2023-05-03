@@ -28,19 +28,27 @@ can be interpreted as such. Fesom spend nearly all it's computing time on calcul
 Generate OASIS3MCT remapping weights for large grids (offline and MPI+OMP parallel)
 =========
 
-Note: This method is meant for Atmosphere-Ocean grid combinations in excess of ~1*10^12, where automatic weight generation on single cores becomes prohibitively time consuming. 
-
 Before you start, make sure that you:
  
 - Obtain the FESOM2 mesh and generate the mesh distribution you would like to use.
-- Use the `ocp-tool <https://github.com/JanStreffing/ocp-tool>`_  to match the FESOM2 mesh to the atmosphere files (really just means cutting caspian out of the OIFS land sea mask)
+- Use the `ocp-tool <https://github.com/AWI-ESM/ocp-tool2/>`_  to match the FESOM2 mesh to the atmosphere files (really just means cutting caspian out of the OIFS land sea mask)
 - Copy the ocp-tool modified OpenIFS input files, as well as the Oasis input files (areas.nc, grids.nc, masks.nc) and the runoff_mapper input files into the sub-directories of the pool dir that you use.
 
 Steps towards the ``rmp_`` files:
 
+- Generate FESOM2 mesh description file with `SpheRlab <https://github.com/FESOM/spheRlab>`
+- Link SpheRlab grid description file into ocp-tool2/fesom_mesh
+- Link OpenIFS ICMGG????INIT files into ocp-tools2/openifs_input_default
+- Run prep_fesom.sh
+- Install / load ocp-tools conda environment
+- Configure and run ocp_tool.py
+- Copy files from ``ocp-tool2/output/oasis3_mct/input`` and ``ocp-tool2/output/openifs_input_modfied`` back into the pool directories
 - Start a coupled simulation with the desired FESOM2 mesh ``dist``. OIFS ``nproc`` may be as small as minimum memory for loading the grid demands.
 - Wait until the FESOM2 mesh information was added to the ``areas.nc, grids.nc, masks.nc`` files.
 - Wait until the BICUBIC remapping files have been generated. (they are much fast than the GAUSWGT ones, and this will cut the manual work in half later)
+
+For small meshes you can also wait for the GAUSWGT remapping files to be created. For large meshes follow the next steps. This method is meant for Atmosphere-Ocean grid combinations in excess of ~1*10^12, where automatic weight generation on single cores becomes prohibitively time consuming. 
+
 - Cancel the job allocation since generating the GAUSWGT ``rmp_`` files would take days to months.
 - Change the COUPLE path in ``awicm-3.1/oasis/util/make_dir/make.${your_config}_``
 - Set the path to ${your_config} in ``awicm-3.1/oasis/util/make_dir/make.inc_``
