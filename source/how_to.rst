@@ -40,7 +40,9 @@ Steps towards the ``rmp_`` files:
 - Link SpheRlab grid description file into ocp-tool2/fesom_mesh
 - Link OpenIFS ICMGG????INIT files into ocp-tools2/openifs_input_default
 - Run prep_fesom.sh
+- Install / load ocp-tools conda environment
 - Configure and run ocp_tool.py
+- Copy files from ``ocp-tool2/output/oasis3_mct/input`` and ``ocp-tool2/output/openifs_input_modfied`` back into the pool directories
 - Start a coupled simulation with the desired FESOM2 mesh ``dist``. OIFS ``nproc`` may be as small as minimum memory for loading the grid demands.
 - Wait until the FESOM2 mesh information was added to the ``areas.nc, grids.nc, masks.nc`` files.
 - Wait until the BICUBIC remapping files have been generated. (they are much fast than the GAUSWGT ones, and this will cut the manual work in half later)
