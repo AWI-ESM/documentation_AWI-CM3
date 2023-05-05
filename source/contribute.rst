@@ -54,4 +54,4 @@ Improving the documentation
 
 To improve this documentation, head over to https://github.com/AWI-CM3/documentation_AWI-CM3. The documentation is written in reStructuredText. You can edit the documentation online on github, which can be helpful to see the reStructuredText parsed in the preview window. If you want to add files and folders, cloning the repository onto your hard-drive of choice and modifying in shell is likely more intuitive. Please refrain form adding many/large files.
 
-Regardless of whether you work online or on your local copy, you then need to create a new branch since the master is protected, commit your modifications, and create a merge request. 
+Regardless of whether you work online or on your local copy, you then need to create a new branch since the master is protected, commit your modifications, and create a merge request. You can preview your merge request build version of the documentation thanks to CI/CD.
