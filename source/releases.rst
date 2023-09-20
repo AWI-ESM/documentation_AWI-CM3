@@ -4,6 +4,34 @@ Releases
 ******
 Full documentation of version 3.0 is published at: https://doi.org/10.5194/gmd-15-6399-2022. The figures shown here in updated form for subsequent releases are first included and, explained and interpreted therein.
 
+
+AWI-CM3 v3.2
+=========
+
+Changes to previous version
+---------
+- Updated FESOM2 from version 2.0 to 2.5 `FESOM2 release AWI-CM_v3.2 <https://github.com/FESOM/fesom2/releases/tag/AWI-CM3_v3.2>`_.
+
+.. raw:: html
+:file: releases/3.2/display.html
+
+
+AWI-CM3 v3.1.2
+=========
+
+Changes to previous version
+---------
+- Fixed bug that caused double orbital forcing call `Tag 3.1.2 <https://gitlab.dkrz.de/ec-earth/oifs-43r3/-/commits/awicm-3.1.2>`_.
+
+
+AWI-CM3 v3.1.1
+=========
+
+Changes to previous version
+---------
+- Fixed OpenIFS sources to allow for simulations with debug flags `Tag 3.1.1 <https://gitlab.dkrz.de/ec-earth/oifs-43r3/-/commits/awicm-3.1.1>`_.
+
+
 AWI-CM3 v3.1
 =========
 
@@ -20,7 +48,7 @@ Changes to previous version
 
 
 .. raw:: html
-   :file: releases/3.1/display.html
+:file: releases/3.1/display.html
 
 AWI-CM3 v3.0
 =========
