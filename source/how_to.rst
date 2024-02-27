@@ -201,7 +201,7 @@ In order to have esm-tools create an openIFS namelist of that form one can adjus
 
 The resulting anomaly of top of the atmosphere insolation shows the expected anomalies across latitudes over time:
 
-.. image:: source/releases/3.1/insolation_anomaly_LIG-PI_openIFS.png
+.. image:: releases/3.1/insolation_anomaly_LIG-PI_openIFS.png
    :width: 600
 
 
