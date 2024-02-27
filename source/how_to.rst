@@ -135,6 +135,20 @@ Control is analogous to CMIP6 but we use ``LCMIP5``, ``CMIP5DATADIR``, and ``NRC
 
 For a more detailed look at the use of these forcing consult the source code file ``src/ifs/climate/updrgas.F90``
 
+Control Aerosol Scaling (AWI-CM3 v3.2 and above)
+=========
+Aerosol Scaling is a feature only available in AWI-CM3 v3.2 and above. For older versions it is not implemented (effectively deactivated). It is controlled via the ``fort.4`` namelist parameter ``NAERANT_SCALE`` in the ``NAERAD`` namelist. By default it is set to ``1`` (activated). If activated, the default aerosol levels (which have an annual cycle that does not change over the years) are scaled according to the spatio-temporal field given in ``ifsdata/aerosol_scale_1850_2085_r2005.nc``. This is supposed to model the anthropogenic influence on aerosol levels over time. For running paleo-simulations one might want to deactivate this. This is best done via an entry in the esm-tools runsctipt:
+
+.. code-block:: yaml
+
+   oifs:
+       add_namelist_changes:
+           fort.4:
+               NAERAD:
+                   NAERANT_SCALE: 0
+
+For a more detailed look, consult the source code files, e.g. ``src/ifs/phys_ec/su_aer_scalefactor.F90``
+
 Change the number of vertical levels for pressure level output of OpenIFS
 =========
 Output in controlled via `XIOS <https://forge.ipsl.jussieu.fr/ioserver>`_. The pressure levels onto which the data is interpolated from model levels is set in ``axis_def.xml``. In principle two options exist. Changing the number of levels for all 3D pressue level output fields and changing the number of levels only for some output fields.
