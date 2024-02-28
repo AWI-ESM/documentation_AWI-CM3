@@ -8,7 +8,7 @@ In order to run AWI-CM3 a few steps must be taken that are outlined here. Some o
 Licencing
 =========
 - Ensure that your research institute or university is in possession of a valid OpenIFS licence. The licence can be obtained from the European Centre for Medium-Range Weather Forecasts (ECMWF) free of charge, but will only be issued to on an institutional basis, not to individuals. https://confluence.ecmwf.int/display/OIFS/Request+OpenIFS+license
-- FESOM2 is available under GPL-2.0 and requires no further action
+- FESOM2 is available under GPL-2.0 and requires no further action https://github.com/FESOM/fesom2/blob/master/LICENSE.txt
 - OASIS4 is available under LGPL and requires no registration http://www.cerfacs.fr/oa4web/oasis3-mct_4.0/oasis3mct_UserGuide/node5.html
 - XIOS is available under CeCILL_V2 and requires no registration http://forge.ipsl.jussieu.fr/ioserver/browser/XIOS/trunk/Licence.txt
 
