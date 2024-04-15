@@ -16,6 +16,14 @@ Changes to previous version
    :file: releases/3.2/display.html
 
 
+AWI-CM3 v3.1.3
+=========
+
+Changes to previous version
+---------
+- Fixed bug that caused the switch `L1PCTCO2` for turning on the 1 percent per year CO2 increase to malfunction `Tag 3.1.3 <https://gitlab.dkrz.de/ec-earth/oifs-43r3/-/commits/awicm-3.1.3>`_. Note that this fix is not contained in v3.2 and v3.2.1.
+
+
 AWI-CM3 v3.1.2
 =========
 
