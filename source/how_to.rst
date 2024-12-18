@@ -135,6 +135,28 @@ Control is analogous to CMIP6 but we use ``LCMIP5``, ``CMIP5DATADIR``, and ``NRC
 
 For a more detailed look at the use of these forcing consult the source code file ``src/ifs/climate/updrgas.F90``
 
+Branch off from existing FESOM2 restart
+=========
+In the esm_tools runscript yaml file, in the fesom section add:
+
+.. code-block:: yaml
+
+   fesom:
+       lresume: true
+       ini_parent_exp_id: "sp1950c"
+       ini_parent_date: "${prev_date}"
+       ini_restart_dir: "/work/ab0995/a270210/runtime/awicm3-v3.1_refactoring/TCO95L91-CORE2/sp1950c/restart/fesom"
+       choose_general.run_number:
+           1:
+               lasttime:
+                   85200
+               restart_in_sources:
+                   par_oce_restart: /${ini_parent_dir}/fesom.1949.oce.restart/*.nc
+                   par_ice_restart: /${ini_parent_dir}/fesom.1949.ice.restart/*.nc
+
+Modify ``ini_parent_exp_id``, ``ini_restart_dir`` as needed for your use case. The variable ``lasttime`` is only needed when the FESOM2 timestep has changed between the old and new experiments. This could for example be the case for a spinup from a coldstart on medium and high resolution meshes.
+
+
 Control Aerosol Scaling (AWI-CM3 v3.2 and above)
 =========
 Aerosol Scaling is a feature only available in AWI-CM3 v3.2 and above. For older versions it is not implemented (effectively deactivated). It is controlled via the ``fort.4`` namelist parameter ``NAERANT_SCALE`` in the ``NAERAD`` namelist. By default it is set to ``1`` (activated). If activated, the default aerosol levels (which have an annual cycle that does not change over the years) are scaled according to the spatio-temporal field given in ``ifsdata/aerosol_scale_1850_2085_r2005.nc``. This is supposed to model the anthropogenic influence on aerosol levels over time. For running paleo-simulations one might want to deactivate this. This is best done via an entry in the esm-tools runscript:
