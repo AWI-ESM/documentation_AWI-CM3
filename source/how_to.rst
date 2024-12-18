@@ -154,7 +154,12 @@ In the esm_tools runscript yaml file, in the fesom section add:
                    par_oce_restart: /${ini_parent_dir}/fesom.1949.oce.restart/*.nc
                    par_ice_restart: /${ini_parent_dir}/fesom.1949.ice.restart/*.nc
 
-Modify ``ini_parent_exp_id``, ``ini_restart_dir`` as needed for your use case. The variable ``lasttime`` is only needed when the FESOM2 timestep has changed between the old and new experiments. This could for example be the case for a spinup from a coldstart on medium and high resolution meshes.
+Modify ``ini_parent_exp_id``, ``ini_restart_dir`` as needed for your use case. The variable ``lasttime`` is only needed when the FESOM2 timestep has changed between the old and new experiments. This could for example be the case for a spinup from a coldstart on medium and high resolution meshes. If you want to set lasttime, you can find the correct value to set it to, as the first number in the fesom.clock file of the previous experiment:
+
+.. code-block:: yaml
+
+   85200 365 1949
+   0.0000000000000 1 1950
 
 
 Control Aerosol Scaling (AWI-CM3 v3.2 and above)
