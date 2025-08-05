@@ -5,6 +5,16 @@ Releases
 Full documentation of version 3.0 is published at: https://doi.org/10.5194/gmd-15-6399-2022. The figures shown here in updated form for subsequent releases are first included and, explained and interpreted therein.
 
 
+AWI-CM3 v3.3.0
+=========
+
+Changes to previous version
+---------
+- Updated FESOM2 from version 2.5 to 2.6.9 `FESOM2 release 2.6 <https://github.com/FESOM/fesom2/releases/tag/2.6.9>`_.
+
+.. raw:: html
+   :file: releases/3.3/display.html
+
 AWI-CM3 v3.2
 =========
 
