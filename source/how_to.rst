@@ -161,8 +161,25 @@ Modify ``ini_parent_exp_id``, ``ini_parent_date``, ``ini_restart_dir``, ``par_oc
    85200 365 1949
    0.0000000000000 1 1950
 
+Branch off from existing LPJGuess restart
+=========
+In the esm_tools runscript yaml file, in the lpj_guess: section add:
 
-Control Aerosol Scaling (AWI-CM3 v3.2 and above)
+.. code-block:: yaml
+    ini_parent_exp_id: "AWIESM3_NTest309_Spinup_NoNlimitation_NoPatchdisturbances"
+    ini_parent_date: "${prev_date}"
+    ini_restart_dir: "/work/bb1469/a270270/runtime/awiesm3-v3.4/AWIESM3_NTest309_Spinup_NoNlimitation_NoPatchdisturbances/restart/lpj_guess"
+    choose_general.run_number:
+        1:
+            restart_in_sources:
+                state: /${ini_restart_dir}/lpjg_state_2037/*
+            restart_out_in_work:
+                state: /${work_dir}/lpjg_state_$(date -u -d "${initial_date}" +%Y)/*
+
+Modify ``ini_parent_exp_id``, ``ini_parent_date``, ``ini_restart_dir``, and ``state`` as needed for your use case.
+
+
+Control Aerosol Scaling (AWI-CM3 v3.2 and v3.3)
 =========
 Aerosol Scaling is a feature only available in AWI-CM3 v3.2 and above. For older versions it is not implemented (effectively deactivated). It is controlled via the ``fort.4`` namelist parameter ``NAERANT_SCALE`` in the ``NAERAD`` namelist. By default it is set to ``1`` (activated). If activated, the default aerosol levels (which have an annual cycle that does not change over the years) are scaled according to the spatio-temporal field given in ``ifsdata/aerosol_scale_1850_2085_r2005.nc``. This is supposed to model the anthropogenic influence on aerosol levels over time. For running paleo-simulations one might want to deactivate this. This is best done via an entry in the esm-tools runscript:
 
