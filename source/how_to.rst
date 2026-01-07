@@ -178,6 +178,21 @@ In the esm_tools runscript yaml file, in the lpj_guess: section add:
 
 Modify ``ini_parent_exp_id``, ``ini_parent_date``, ``ini_restart_dir``, and ``state`` as needed for your use case.
 
+Branch off from existing OpenIFS restart
+=========
+In the esm_tools runscript yaml file, in the oifs section add:
+
+.. code-block:: yaml
+
+   oifs:
+       lresume: true
+       ini_restart_dir: "${general.ini_parent_dir}/restart/oifs/"
+       ini_restart_exp_id: "${general.ini_parent_exp_id}"
+       ini_restart_date: '1949-12-31T23:00:00'
+       ini_pseudo_initial_date: "1949-12-01"
+       prev_run_config_file: "${general.ini_parent_dir}/config/${general.ini_parent_exp_id}_finished_config.yaml_19491201-19491231"
+
+Modify ``ini_restart_dir``, ``ini_restart_exp_id``, ``ini_restart_date``, ``ini_pseudo_initial_date``, and ``prev_run_config_file`` as needed for your use case. The ``ini_pseudo_initial_date`` should be set to one restart interval (e.g. 1 month or 1 year) before ``general.initial_date`` of the new experiment. This is used to trick OpenIFS into thinking it is always doing a short run, avoiding memory issues in long simulations.
 
 Control Aerosol Scaling (AWI-CM3 v3.2 and v3.3)
 =========
