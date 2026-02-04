@@ -10,7 +10,7 @@ AWI-CM3 v3.3.0
 
 Changes to previous version
 ---------
-- Updated FESOM2 from version 2.5 to 2.6.9 `FESOM2 release 2.6 <https://github.com/FESOM/fesom2/releases/tag/2.6.9>`_.
+- Updated FESOM2 from version 2.5 to 2.6.8 `FESOM2 release 2.6 <https://github.com/FESOM/fesom2/releases/tag/2.6.9>`_.
 
 .. raw:: html
    :file: releases/3.3/display.html
