@@ -3,6 +3,12 @@
 How to
 ******
 
+Cite this model
+=========
+
+Streffing, J., Sidorenko, D., Semmler, T., Zampieri, L., Scholz, P., Andres-Martinez, M., . . . Jung, T. (2022). AWI-CM3 coupled climate model: description and evaluation experiments for a prototype post-CMIP6 model. Geoscientific Model Development, 15 (16), 6399–6427. Retrieved from https://gmd.copernicus.org/articles/15/6399/2022/ doi: 10.5194/gmd-15-6399-2022
+
+
 Measure which component is limiting the throughput of the coupled model
 =========
 
@@ -22,32 +28,42 @@ can be interpreted as such. Fesom spend nearly all it's computing time on calcul
 Generate OASIS3MCT remapping weights for large grids (offline and MPI+OMP parallel)
 =========
 
-Note: This method is meant for Atmosphere-Ocean grid combinations in excess of ~1*10^12, where automatic weight generation on single cores becomes prohibitively time consuming. 
-
 Before you start, make sure that you:
  
 - Obtain the FESOM2 mesh and generate the mesh distribution you would like to use.
-- Use the `ocp-tool <https://github.com/JanStreffing/ocp-tool>`_  to match the FESOM2 mesh to the atmosphere files (really just means cutting caspian out of the OIFS land sea mask)
+- Use the `ocp-tool <https://github.com/AWI-ESM/ocp-tool2/>`_  to match the FESOM2 mesh to the atmosphere files (really just means cutting caspian out of the OIFS land sea mask)
 - Copy the ocp-tool modified OpenIFS input files, as well as the Oasis input files (areas.nc, grids.nc, masks.nc) and the runoff_mapper input files into the sub-directories of the pool dir that you use.
 
 Steps towards the ``rmp_`` files:
 
+- Generate FESOM2 mesh description file with `SpheRlab <https://github.com/FESOM/spheRlab>`_
+- Link SpheRlab grid description file into ocp-tool2/fesom_mesh
+- Link OpenIFS ICMGG????INIT files into ocp-tools2/openifs_input_default
+- Run prep_fesom.sh
+- Install / load ocp-tools conda environment
+- Configure and run ocp_tool.py
+- Copy files from ``ocp-tool2/output/oasis3_mct/input`` and ``ocp-tool2/output/openifs_input_modfied`` back into the pool directories
 - Start a coupled simulation with the desired FESOM2 mesh ``dist``. OIFS ``nproc`` may be as small as minimum memory for loading the grid demands.
 - Wait until the FESOM2 mesh information was added to the ``areas.nc, grids.nc, masks.nc`` files.
 - Wait until the BICUBIC remapping files have been generated. (they are much fast than the GAUSWGT ones, and this will cut the manual work in half later)
+
+For small meshes you can also wait for the GAUSWGT remapping files to be created. For large meshes follow the next steps. This method is meant for Atmosphere-Ocean grid combinations in excess of ~1*10^12, where automatic weight generation on single cores becomes prohibitively time consuming. 
+
 - Cancel the job allocation since generating the GAUSWGT ``rmp_`` files would take days to months.
 - Change the COUPLE path in ``awicm-3.1/oasis/util/make_dir/make.${your_config}_``
 - Set the path to ${your_config} in ``awicm-3.1/oasis/util/make_dir/make.inc_``
 - Go to ``awicm-3.1/oasis/examples/test_interpolation``
 - Add your ``areas.nc, grids.nc, masks.nc`` files to ``awicm-3.1/oasis/examples/test_interpolation/data_frontiers``
 - Modify the ``awicm-3.1/oasis/examples/test_interpolation/run_frontiersinterp.sh`` to add your machine, if it's not included already.
--  Extract the first of the ``GAUSWGT`` couplings (FESOM->OIFS) from the namcouple in your work folder where you generated the ``BICUBIC`` ``rmp_`` files.
-- Create a namcouple containing only this one remapping in ``awicm-3.1/oasis/examples/test_interpolation/data_frontiers`` For an example, see: ``awicm-3.1/oasis/examples/test_interpolation/data_frontiers/namcouple_feom_A160_gauswgt``
-- Configure `awicm-3.1/oasis/examples/test_interpolation/run_frontiersinterp.sh` to generate this remapping with OpenMP parallelization.
-- Generate the first GAUSWGT remapping by starting ``run_frontiersinterp.sh`` on the batch queue.
-- Go to Step 9 and repeat for second ``GAUSWGT`` remapping (Runoff-mapper -> FESOM).
+- Extract the ``GAUSWGT`` couplings (FESOM->OIFS) from the namcouple in your work folder where you generated the ``BICUBIC`` ``rmp_`` files.
+- Create one namcouple for every remapping in direction at ``awicm-3.1/oasis/examples/test_interpolation/data_frontiers`` For an example, see: ``awicm-3.1/oasis/examples/test_interpolation/data_frontiers/namcouple_feom_A160_gauswgt``
+- Configure `awicm-3.1/oasis/examples/test_interpolation/run_frontiersinterp.sh` to generate these remappings with MPI and OpenMP parallelization.
+- Generate the GAUSWGT remappings by starting ``run_frontiersinterp.sh`` on the batch queue.
 - Copy all ``rmp_`` files into the respective pool dir folder (e.g. ``input/oasis/cy43r3/{OIFS_RES}-${FESOM_RES}/${FESOM_DIST}``).
-- Start a coupled simulation.
+- Start a day long coupled simulation with oasis ``lresume=false`` to generate oasis restart files
+- Copy oasis restart files into pool dir
+- Start full speed simulation with oasis ``lresume=true`` to generate oasis restart files
+
 
 
 Select an SSP or RCP scenario
@@ -55,6 +71,8 @@ Select an SSP or RCP scenario
 CMIP6
 ---------
 Control is possible through the namelist file fort.4. Inside you will find the namelist NAERAD, which contains the options for CMIP5 and CMIP6 greenhouse gas forcing. To activate CMIP6 forcing set the logic switch ``LCMIP6 = .true.``. When NCMIPFIXYR is set to a value >0, it is interpreted as a fix forcing year. In the example below we use constant 1850 GHG forcing. If NCMIPFIXYR=0 the actual model year is used, and forcing changes from year to year. Note, that currently only greenhouse gases and solar radiation are set through this namelist. Work on the implementation of controllable anthopogenic aerosols is still ongoing (status: 30th of June 2022).
+
+The recommended way to ensure the namelist changes are made conistently, is to use the `add_namelist_changes <https://esm-tools.readthedocs.io/en/latest/cookbook.html?highlight=add_namelist_changes#changing-namelist-entries-from-the-runscript>`_ from esm-tools.
 
 .. code-block:: Fortran
    
@@ -117,6 +135,79 @@ Control is analogous to CMIP6 but we use ``LCMIP5``, ``CMIP5DATADIR``, and ``NRC
 
 For a more detailed look at the use of these forcing consult the source code file ``src/ifs/climate/updrgas.F90``
 
+Branch off from existing FESOM2 restart
+=========
+In the esm_tools runscript yaml file, in the fesom section add:
+
+.. code-block:: yaml
+
+   fesom:
+       lresume: true
+       ini_parent_exp_id: "sp1950c"
+       ini_parent_date: "${prev_date}"
+       ini_restart_dir: "/work/ab0995/a270210/runtime/awicm3-v3.1_refactoring/TCO95L91-CORE2/sp1950c/restart/fesom"
+       choose_general.run_number:
+           1:
+               lasttime:
+                   85200
+               restart_in_sources:
+                   par_oce_restart: /${ini_restart_dir}/fesom.1949.oce.restart/*.nc
+                   par_ice_restart: /${ini_restart_dir}/fesom.1949.ice.restart/*.nc
+
+Modify ``ini_parent_exp_id``, ``ini_parent_date``, ``ini_restart_dir``, ``par_oce_restart``, and ``par_ice_restart`` as needed for your use case. The variable ``lasttime`` is only needed when the FESOM2 timestep has changed between the old and new experiments. This could for example be the case for a spinup from a coldstart on medium and high resolution meshes. If you want to set ``lasttime``, you can find the correct value to set it to, as the first number in the fesom.clock file of the previous experiment (e.g. <path-to-previous-experiment>/config/fesom/fesom.clock):
+
+.. code-block:: yaml
+
+   85200 365 1949
+   0.0000000000000 1 1950
+
+Branch off from existing LPJGuess restart
+=========
+In the esm_tools runscript yaml file, in the lpj_guess: section add:
+
+.. code-block:: yaml
+    ini_parent_exp_id: "AWIESM3_NTest309_Spinup_NoNlimitation_NoPatchdisturbances"
+    ini_parent_date: "${prev_date}"
+    ini_restart_dir: "/work/bb1469/a270270/runtime/awiesm3-v3.4/AWIESM3_NTest309_Spinup_NoNlimitation_NoPatchdisturbances/restart/lpj_guess"
+    choose_general.run_number:
+        1:
+            restart_in_sources:
+                state: /${ini_restart_dir}/lpjg_state_2037/*
+            restart_out_in_work:
+                state: /${work_dir}/lpjg_state_$(date -u -d "${initial_date}" +%Y)/*
+
+Modify ``ini_parent_exp_id``, ``ini_parent_date``, ``ini_restart_dir``, and ``state`` as needed for your use case.
+
+Branch off from existing OpenIFS restart
+=========
+In the esm_tools runscript yaml file, in the oifs section add:
+
+.. code-block:: yaml
+
+   oifs:
+       lresume: true
+       ini_restart_dir: "${general.ini_parent_dir}/restart/oifs/"
+       ini_restart_exp_id: "${general.ini_parent_exp_id}"
+       ini_restart_date: '1949-12-31T23:00:00'
+       ini_pseudo_initial_date: "1949-12-01"
+       prev_run_config_file: "${general.ini_parent_dir}/config/${general.ini_parent_exp_id}_finished_config.yaml_19491201-19491231"
+
+Modify ``ini_restart_dir``, ``ini_restart_exp_id``, ``ini_restart_date``, ``ini_pseudo_initial_date``, and ``prev_run_config_file`` as needed for your use case. The ``ini_pseudo_initial_date`` should be set to one restart interval (e.g. 1 month or 1 year) before ``general.initial_date`` of the new experiment. This is used to trick OpenIFS into thinking it is always doing a short run, avoiding memory issues in long simulations.
+
+Control Aerosol Scaling (AWI-CM3 v3.2 and v3.3)
+=========
+Aerosol Scaling is a feature only available in AWI-CM3 v3.2 and above. For older versions it is not implemented (effectively deactivated). It is controlled via the ``fort.4`` namelist parameter ``NAERANT_SCALE`` in the ``NAERAD`` namelist. By default it is set to ``1`` (activated). If activated, the default aerosol levels (which have an annual cycle that does not change over the years) are scaled according to the spatio-temporal field given in ``ifsdata/aerosol_scale_1850_2085_r2005.nc``. This is supposed to model the anthropogenic influence on aerosol levels over time. For running paleo-simulations one might want to deactivate this. This is best done via an entry in the esm-tools runscript:
+
+.. code-block:: yaml
+
+   oifs:
+       add_namelist_changes:
+           fort.4:
+               NAERAD:
+                   NAERANT_SCALE: 0
+
+For a more detailed look, consult the source code files, e.g. ``src/ifs/phys_ec/su_aer_scalefactor.F90``
+
 Change the number of vertical levels for pressure level output of OpenIFS
 =========
 Output in controlled via `XIOS <https://forge.ipsl.jussieu.fr/ioserver>`_. The pressure levels onto which the data is interpolated from model levels is set in ``axis_def.xml``. In principle two options exist. Changing the number of levels for all 3D pressue level output fields and changing the number of levels only for some output fields.
@@ -153,13 +244,147 @@ Example for manual control:
       ORBMVELP = 102.7
       
 
-Comparison of PI (1850) insolation for various relevant models.
+In order to have esm-tools create an openIFS namelist of that form one can adjust the simulation YAML. The following example would let openIFS compute top of the atmosphere insolation based on an LIG orbit whose parameters are as defined for PMIP4:
+
+.. code-block:: yaml
+
+   oifs:
+       add_namelist_changes:
+           fort.4:
+               NAMORB:
+                   LCORBMD: TRUE
+                   ORBMODE: 'fixed_parameters'
+                   ORBECCEN: 0.039378
+                   ORBOBLIQ: 24.040
+                   ORBMVELP: 275.41
+
+The resulting anomaly of top of the atmosphere insolation shows the expected anomalies across latitudes over time:
+
+.. image:: releases/3.1/insolation_anomaly_LIG-PI_openIFS.png
+   :width: 600
+
+Comparison of PI (1850) insolation for various relevant models
 ---------------------------------------------------------------
 Differences between ECHAM6 and openIFS generated insolation can be deemed negligibly small. There is an overall offset of both ECHAM6 and openIFS with respect to the insolation computed from the PMIP4 PI orbit settings - that question may deserve further investigation. Note that ECHAM6 computes their modern insolation based on an internal orbit solution, i.e. the orbital parameters are never explicitly provided to the model as a forcing.
-![insolation based on PMIP4 orbital parameters, computed based on climlab](https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1/insolation_absolute_PI_PMIP4.png?raw=true)
-![openIFS computed PI insolation, monthly means](https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1/insolation_absolute_PI_openIFS.png?raw=true)
-![ECHAM6 computed PI insolation, daily means](https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1/insolation_absolute_PI_ECHAM6_daily.png?raw=true)
-![ECHAM6 computed PI insolation, monthly means, interpolated to openIFS grid](https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1/insolation_absolute_PI_ECHAM6_monthly.png?raw=true)
-![anomaly of PI insolation, openIFS minus ECHAM6](https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1/insolation_anomaly_PI_openIFS-ECHAM6_monthly.png?raw=true)
 
-Files towards generation of the plots above are available at https://github.com/AWI-CM3/documentation_AWI-CM3/tree/master/source/releases/3.1
+.. figure:: releases/3.1/insolation_absolute_PI_PMIP4.png
+   :width: 600
+
+   Insolation based on PMIP4 orbital parameters, computed based on climlab.
+
+.. figure:: releases/3.1/insolation_absolute_PI_openIFS.png
+   :width: 600
+
+   OpenIFS computed PI insolation, monthly means.
+
+.. figure:: releases/3.1/insolation_absolute_PI_ECHAM6_daily.png
+   :width: 600
+
+   ECHAM6 computed PI insolation, daily means.
+
+.. figure:: releases/3.1/insolation_absolute_PI_ECHAM6_monthly.png
+   :width: 600
+
+   ECHAM6 computed PI insolation, monthly means, interpolated to openIFS grid.
+
+.. figure:: releases/3.1/insolation_anomaly_PI_openIFS-ECHAM6_monthly.png
+   :width: 600
+
+   Anomaly of PI insolation, openIFS minus ECHAM6.
+
+Files towards generation of the plots above are available in ``source/releases/3.1/``.
+
+
+Use debug flags
+=========
+
+In case your model setup produces a segmentation fault it can be helpful to compile and run the model with debug flags. These can be set separatly for different executables in the coupled system. Here we mostly point you towards the locations that need to be modified in order to use debug flags. A comprehensive overview on which flags might help can be found at: https://doku.lrz.de/comparison-of-compiler-options-intel-vs-pgi-vs-gcc-11481685.html#ComparisonofCompilerOptions(intelvs.pgivs.gcc)-Diagnostics,RuntimeCheckingandDebugging
+
+OpenIFS cy43r3 (AWI-CM3 v3.2 and below)
+--------
+You can replace the OpenIFS Fortran compile and linker flags through esm_tools under ``esm_tools/configs/components/oifs/oifs.env.yaml`` by modifying ``OIFS_FFLAGS``. E.g:
+
+.. code-block:: yaml
+
+   oifs:
+      compiletime_environment_changes:
+         levante:
+            add_export_vars:
+               OIFS_FFLAGS: '"-r8 -fp-model precise -align array32byte -O3 -qopenmp -g -traceback -convert big_endian -march=core-avx2 -mtune=core-avx2"'
+
+Make sure you pick the right HPC system and use flags that fit to the compiler which is being used (see compiletime log output).
+
+
+OpenIFS cy48r1 (AWI-CM3 v3.3 and above)
+--------
+TBA.
+
+
+for FESOM2
+--------
+For FESOM2 it is currenty neccessary to modify the compiler settings in the source code folder inside the file ``awicm3-v3.2/fesom-2.5/src/CMakeLists.txt``. The exact path my vary with your model version. You will find inside a block with different FORTRAN flags depending on compiler ``Inter/GNU/Cray/NVHPC``, on whether FESOM2 is build as a library or executable, and sometimes on HPC system:
+
+.. code-block:: CMake
+
+   if(${CMAKE_Fortran_COMPILER_ID} STREQUAL  Intel )
+      if(${BUILD_FESOM_AS_LIBRARY})
+           target_compile_options(${PROJECT_NAME} PRIVATE -r8 -i4 -fp-model precise -no-prec-div -no-prec-sqrt -fimf-use-svml -xHost -ip -init=zero -no-wrap-margin -fpe0) # add -fpe0 for RAPS environment
+      else()
+           target_compile_options(${PROJECT_NAME} PRIVATE -r8 -i4 -fp-model precise -no-prec-div -no-prec-sqrt -fimf-use-svml -ip -init=zero -no-wrap-margin)
+      endif()
+      if(${FESOM_PLATFORM_STRATEGY} STREQUAL  levante.dkrz.de )
+         target_compile_options(${PROJECT_NAME} PRIVATE -march=core-avx2 -mtune=core-avx2)
+      elseif(${FESOM_PLATFORM_STRATEGY} STREQUAL  albedo)
+         target_compile_options(${PROJECT_NAME} PRIVATE -march=core-avx2 -O3 -ip -fPIC -qopt-malloc-options=2 -qopt-prefetch=5 -unroll-aggressive) #NEC mpi option
+      else()
+         target_compile_options(${PROJECT_NAME} PRIVATE -xHost)
+      endif()
+   #    target_compile_options(${PROJECT_NAME} PRIVATE -g -traceback ) #-check all,noarg_temp_created,bounds,uninit ) #-ftrapuv ) #-init=zero)
+   #    target_compile_options(${PROJECT_NAME} PRIVATE -qopenmp -r8 -i4 -fp-model precise -no-prec-div -no-prec-sqrt -fimf-use-svml -xHost -ip -g -traceback -check all,noarg_temp_created,bounds,uninit ) #-ftrapuv ) #-init=zero)
+   #    target_compile_options(${PROJECT_NAME} PRIVATE -r8 -i4 -fp-model precise -no-prec-div -no-prec-sqrt -fimf-use-svml -ip -g -traceback -check all,noarg_temp_created,bounds,uninit ) #-ftrapuv ) #-init=zero)
+   
+   elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL  GNU )
+   #    target_compile_options(${PROJECT_NAME} PRIVATE -O3 -finit-local-zero  -finline-functions -fimplicit-none  -fdefault-real-8 -ffree-line-length-none)
+      target_compile_options(${PROJECT_NAME} PRIVATE -O2 -g -ffloat-store -finit-local-zero  -finline-functions -fimplicit-none  -fdefault-real-8 -ffree-line-length-none)
+      if(CMAKE_Fortran_COMPILER_VERSION VERSION_GREATER_EQUAL 10 )
+         target_compile_options(${PROJECT_NAME} PRIVATE -fallow-argument-mismatch) # gfortran v10 is strict about erroneous API calls: "Rank mismatch between actual argument at (1) and actual argument at (2) (scalar and rank-1)"
+      endif()
+   elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL Cray )
+      if(${ENABLE_OPENMP})
+         target_compile_options(${PROJECT_NAME} PRIVATE -c -emf -hbyteswapio -hflex_mp=conservative -hfp1 -hadd_paren -Ounroll0 -hipa0 -r am -s real64 -N 1023 -homp)
+      else()
+         target_compile_options(${PROJECT_NAME} PRIVATE -c -emf -hbyteswapio -hflex_mp=conservative -hfp1 -hadd_paren -Ounroll0 -hipa0 -r am -s real64 -N 1023 -hnoomp)
+      endif()
+   elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL NVHPC )
+      target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_NVHPC_WORKAROUNDS)
+      target_compile_options(${PROJECT_NAME} PRIVATE -fast -fastsse -O3 -Mallocatable=95 -Mr8 -pgf90libs)
+      if(${ENABLE_OPENACC})
+         # additional compiler settings
+         target_compile_options(${PROJECT_NAME} PRIVATE -acc -ta=tesla:${NV_GPU_ARCH} -Minfo=accel)
+         set(CMAKE_EXE_LINKER_FLAGS "-acc -ta=tesla:${NV_GPU_ARCH}")
+      endif()
+      if(${ENABLE_OPENMP})
+         target_compile_options(${PROJECT_NAME} PRIVATE -Mipa=fast)
+      else()
+         target_compile_options(${PROJECT_NAME} PRIVATE -Mipa=fast,inline)
+      endif()
+   endif()
+
+In order to change the compiler settings you replace the ``target_compile_options`` that are currently used with the ones that you would like to have. Make sure you pick the right HPC system and use flags that fit to the compiler which is being used (see compiletime log output). Typical debug flags for e.g. Intel would be ``-g -traceback -check all,noarg_temp_created,bounds,uninit``. 
+
+for XIOS
+--------
+
+For the IO server debug flags can be set inside the xios source code folder at: ``awicm3-v3.2/xios/arch.fcm``. The exact path may vary by model version. Here you want to add some of the DEV and DEBUG flags to the BASE flags for Fortran or C, as appropriate:
+
+.. code-block:: CMake
+
+   %BASE_CFLAGS    -std=c++11 -diag-disable 1125 -diag-disable 279 -D__XIOS_EXCEPTION
+   %PROD_CFLAGS    -O3 -D BOOST_DISABLE_ASSERTS -march=core-avx2 -mtune=core-avx2
+   %DEV_CFLAGS     -g -traceback
+   %DEBUG_CFLAGS   -DBZ_DEBUG -g -traceback -fno-inline
+   
+   %BASE_FFLAGS    -D__NONE__
+   %PROD_FFLAGS    -O3 -march=core-avx2 -mtune=core-avx2
+   %DEV_FFLAGS     -g -O2 -traceback
+   %DEBUG_FFLAGS   -g -traceback
