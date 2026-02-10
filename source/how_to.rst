@@ -304,7 +304,7 @@ For selective fitting, in the ``<axis id="pressure_levels_zoom"`` section, you c
 Control orbital parameters
 =========
 
-The orbital parameters (eccentricity, obliquity, and longitude of perihelion) can be controlled through the namelist ``NAMORB`` inside the ``fort.4`` file. For details of the implementation, consider looking at yomorb.F90 and su0phy.F90.  Controllable orbital parameters are turned on with the logic swtich: ``LCORBMD=true``, which is turned off by default. There are then three modes with which the orbital parameters can be controlled.
+The orbital parameters (eccentricity, obliquity, and longitude of perihelion) can be controlled through the namelist ``NAMORB`` inside the ``fort.4`` file. For details of the implementation, consider looking at yomorb.F90 and su0phy.F90.  Controllable orbital parameters are turned on with the logic switch: ``LCORBMD=true``, which is turned off by default. There are then three modes with which the orbital parameters can be controlled.
 
 - Under ``ORBMODE=variable_year`` mode the orbital parameters are calculated according to Berger et al. 1978 for the current year of the simulation. This is the default. The calculation can be considered reliable within ~+-1 million years of the present.
 - Under ``ORBMODE=fixed_year`` mode the orbital parameters are calculated according to Berger et al. 1978 for the fixed year set by the namelist variable ``ORBIY``. If you choose fixed year but set no year, the default is 1950.
@@ -340,6 +340,37 @@ The resulting anomaly of top of the atmosphere insolation shows the expected ano
 
 .. image:: releases/3.1/insolation_anomaly_LIG-PI_openIFS.png
    :width: 600
+
+Comparison of PI (1850) insolation for various relevant models
+---------------------------------------------------------------
+Differences between ECHAM6 and openIFS generated insolation can be deemed negligibly small. There is an overall offset of both ECHAM6 and openIFS with respect to the insolation computed from the PMIP4 PI orbit settings - that question may deserve further investigation. Note that ECHAM6 computes their modern insolation based on an internal orbit solution, i.e. the orbital parameters are never explicitly provided to the model as a forcing.
+
+.. figure:: releases/3.1/insolation_absolute_PI_PMIP4.png
+   :width: 600
+
+   Insolation based on PMIP4 orbital parameters, computed based on climlab.
+
+.. figure:: releases/3.1/insolation_absolute_PI_openIFS.png
+   :width: 600
+
+   OpenIFS computed PI insolation, monthly means.
+
+.. figure:: releases/3.1/insolation_absolute_PI_ECHAM6_daily.png
+   :width: 600
+
+   ECHAM6 computed PI insolation, daily means.
+
+.. figure:: releases/3.1/insolation_absolute_PI_ECHAM6_monthly.png
+   :width: 600
+
+   ECHAM6 computed PI insolation, monthly means, interpolated to openIFS grid.
+
+.. figure:: releases/3.1/insolation_anomaly_PI_openIFS-ECHAM6_monthly.png
+   :width: 600
+
+   Anomaly of PI insolation, openIFS minus ECHAM6.
+
+Files towards generation of the plots above are available in ``source/releases/3.1/``.
 
 
 Use debug flags
