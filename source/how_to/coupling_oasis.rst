@@ -5,18 +5,46 @@ Coupling and OASIS
 Measure which component is limiting the throughput of the coupled model
 =======================================================================
 
-Coupled performance balancing can be performed with the oasis lucia tool. In the work folder where your experiment ran, execute ``${model_dir}/oasis/util/lucia/lucia``, where ``model_dir`` is your install directory, for example ``awicm3-v3.4.2`` or ``awiesm3-develop-is``. When executing lucia for the first time, a fortran compiler needs to be available in the environment.
-The output,
-   
+OASIS times every component and tells you which one the others are waiting for. It is off by default, and you turn it on in the runscript:
+
+.. code-block:: yaml
+
+   oasis3mct:
+       use_lucia: True
+
+Where the numbers come out depends on the OASIS version. Do not expect zero waiting anywhere on either, because timestep length varies through a run: radiation is called every two hours in OpenIFS, so those steps are longer than the ones between them.
+
+OASIS3-MCT 5
+------------
+
+Applies to: AWI-CM3 v3.4.0 and later, and every AWI-ESM3.
+
+OASIS does the analysis itself and writes ``load_balancing_info.txt`` into the work directory at the end of the run. Nothing to run afterwards, no compiler needed. Read the load balance block first:
+
+.. code-block:: text
+
+  Model    /   Computing time  /  Waiting time
+
+     fesom /  806.519 /   89.604
+   OpenIFS /  290.573 /  684.287
+     rnfma /  259.135 / 1201.080
+      lpjg / -179.092 / 1272.322
+    xios.x /    0.000 /    0.000
+
+FESOM2 computed for most of the run and waited the least, so it is what holds this configuration back. OpenIFS waited more than twice as long as it computed, so it has more cores than it can use against a FESOM2 that slow, and moving some of them to FESOM2 would buy throughput. Further down, each component also gets a ``Partial coupling cost (%)``, which is the share of its wall time spent in coupling rather than in its own science.
+
+OASIS3-MCT 4
+------------
+
+Applies to: AWI-CM3 v3.3.1 and earlier.
+
+OASIS writes raw ``lucia.*`` files instead, and you post-process them yourself by running ``${model_dir}/oasis/util/lucia/lucia`` in the work folder where the experiment ran. A fortran compiler has to be in the environment the first time, because lucia builds itself on first use. The output is one table, read the same way:
+
 ..  code-block:: bash
-  
+
   Component -         Calculations   -     Waiting time (s) - # cpl step :
   fesom                    1616.47                 45.08          4377
   oifs                     1263.30                397.72          4377
- 
-..
-  
-can be interpreted as such. Fesom spend nearly all it's computing time on calculations, while oifs was waiting for about 1/4 of the time. Therefore fesom was the   limiting factor on this specific setup. Take note, that having zero waiting time in all components is no achievable, since the length of timesteps varies throughout the run, depending on output and called physics packages. For example the radiation is called every 2 hours in OpenIFS making this timesteps longer than the non-radiation ones in between. Modern versions of lucia also provide solutions for optimizing with this imbalance in mind.
 
 Generate OASIS3MCT remapping weights for large grids (offline and MPI+OMP parallel)
 ===================================================================================
