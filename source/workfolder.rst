@@ -177,6 +177,7 @@ Detailed description of coupling files and which ones can be generated on the fl
 |                           | - Do not depend on hpc system                                 |
 |                           | - Shall be linked in if possible to save time.                |
 |                           | - Stay constant throughout an experiment                      |
+|                           | - Can be reordered for a new FESOM2 core count                |
 +---------------------------+---------------------------------------------------------------+
 | restart files rst         | - Can be generated only in lresume_oasis3mct:false runs       |
 |                           | - If lresume_oasis3mct:true they have to be linked in         |
@@ -186,6 +187,7 @@ Detailed description of coupling files and which ones can be generated on the fl
 |                           | - Do not depend on hpc system                                 |
 |                           | - Shall be linked in if possible to save time.                |
 |                           | - Change throughout an experiment and are part of the restart |
+|                           | - Can be reordered for a new FESOM2 core count                |
 +---------------------------+---------------------------------------------------------------+
 | masks, grids, areas.nc    | - OpenIFS part can not be generated at runtime                |
 |                           | - Do depend on OpenIFS & FESOM2 resolution                    |
