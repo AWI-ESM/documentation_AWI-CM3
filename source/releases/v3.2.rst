@@ -6,7 +6,12 @@ Changes to previous version
 ===========================
 - Updated FESOM2 from version 2.0 to 2.5 `FESOM2 release AWI-CM_v3.2 <https://github.com/FESOM/fesom2/releases/tag/AWI-CM3_v3.2>`_.
 
-``v3.2.1`` and ``v3.2.2`` are installable and produce bit identical results to ``v3.2``, despite carrying different component versions, so the evaluation below covers all three and they have no pages of their own.
+Patch releases covered by this evaluation
+=========================================
+
+``v3.2.1`` and ``v3.2.2`` install as their own targets and carry different component versions to ``v3.2``, but they produce bit identical results, so the figures further down describe them too.
+
+Note that the ``L1PCTCO2`` fix released as v3.1.3 is in neither ``v3.2`` nor ``v3.2.1``.
 
 .. raw:: html
    :file: 3.2/display.html

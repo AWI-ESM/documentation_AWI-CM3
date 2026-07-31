@@ -11,8 +11,5 @@ Full documentation of version 3.0 is published at: https://doi.org/10.5194/gmd-1
 
    releases/v3.3.0
    releases/v3.2
-   releases/v3.1.3
-   releases/v3.1.2
-   releases/v3.1.1
    releases/v3.1
    releases/v3.0

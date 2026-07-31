@@ -13,6 +13,14 @@ Changes to previous version
 - Ocean current feedback coupling `#91 <https://github.com/AWI-ESM/project_management/issues/91>`_
 - Coupling of mass and heat flux of snow falling on icesheets `#96 <https://github.com/AWI-ESM/project_management/issues/96>`_
 
+Patch releases covered by this evaluation
+=========================================
+
+These install as their own targets and carry the fixes below, but they leave the evaluation unchanged, so the figures further down describe them too.
+
+- ``v3.1.1``: fixed OpenIFS sources to allow for simulations with debug flags. `Tag 3.1.1 <https://gitlab.dkrz.de/ec-earth/oifs-43r3/-/commits/awicm-3.1.1>`_
+- ``v3.1.2``: fixed a bug that caused a double orbital forcing call. `Tag 3.1.2 <https://gitlab.dkrz.de/ec-earth/oifs-43r3/-/commits/awicm-3.1.2>`_
+- ``v3.1.3``: fixed a bug that made the ``L1PCTCO2`` switch for the one percent per year CO2 increase malfunction. `Tag 3.1.3 <https://gitlab.dkrz.de/ec-earth/oifs-43r3/-/commits/awicm-3.1.3>`_ This fix is in neither v3.2 nor v3.2.1.
 
 .. raw:: html
    :file: 3.1/display.html
