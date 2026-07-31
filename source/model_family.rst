@@ -11,16 +11,34 @@ If you already know which setup you are on, you can leave. Everything else in th
 How the names work
 ==================
 
-A name is ``AWI-``, then the family, then the version, then an optional feature suffix. ``AWI-ESM3-v3.5.0-cc`` is family ``ESM3``, version ``v3.5.0``, suffix ``cc``.
+.. code-block:: text
+
+   AWI-ESM3-v3.5.0-cc
+       |    |      |
+       |    |      +-- configuration: cc = carbon cycle, is = ice sheet
+       |    +-- version: always three numbers
+       +-- family: ESM3 builds LPJ-GUESS, CM3 does not
+
+Three things about that, in the order people get them wrong:
 
 - **The family is a component set.** AWI-ESM3 contains LPJ-GUESS and AWI-CM3 does not. They are separate setups in esm_tools, at ``configs/setups/awicm3/`` and ``configs/setups/awiesm3/``, and neither is a version of the other. Both are supported and both are still developed.
-- **The version is a bundle of component versions, not a patch level of one model.** AWI-CM3-v3.4.2 and AWI-ESM3-v3.4.2 carry exactly the same OpenIFS, FESOM2, XIOS, OASIS3-MCT and runoff mapper, and differ only in that the second one also builds LPJ-GUESS. A shared version number means the shared components match, nothing more.
-- **The suffix names a configuration, not a patch level.** ``AWI-ESM3-v3.5.0-cc`` is not a bugfix release of ``AWI-ESM3-v3.5.0``, and ``-is`` is not a later version than ``-cc``. They are three configurations that share an ocean and an atmosphere, gated in esm_tools by feature switch rather than by version, so read the suffix as "with the carbon cycle" and "with the ice sheet".
-- **A patch version is a separate target, not an update to the one below it.** ``awicm3-v3.2`` installs v3.2 and always will. It does not pick up ``v3.2.1`` or ``v3.2.2``, both of which are fixes on top of it, and there is no alias anywhere that tracks the newest patch in a line. That is deliberate, since a version named in a paper has to resolve to the same source forever, and it is the same choice CESM and EC-Earth make. The cost is that fixes do not travel on their own: the ``L1PCTCO2`` fix released as v3.1.3 is in neither v3.2 nor v3.2.1. Check :doc:`releases` for the newest version in a line before you install, rather than assuming the shortest name is the newest. Every release from v3.3.0 onward carries all three numbers and that is now the rule, so a release is ``v3.5.0`` and never ``v3.5``. Where this documentation writes a two number version it means the line of releases, not something you can install.
+- **The version bundles component versions.** AWI-CM3-v3.4.2 and AWI-ESM3-v3.4.2 carry the same OpenIFS, FESOM2, XIOS, OASIS3-MCT and runoff mapper, and differ only in that the second also builds LPJ-GUESS. A shared version number means the shared components match, nothing more.
+- **The suffix names a configuration, not a patch level.** ``-cc`` is not a bugfix of the plain version, and ``-is`` is not later than ``-cc``. They are three configurations sharing an ocean and an atmosphere, gated in esm_tools by feature switch rather than by version.
 
 The esm_master target is the name lowercased with the family run together, followed by the exact version: ``awicm3-v3.2``, ``awiesm3-v3.4.2``.
 
 Targets ending in ``develop`` follow a branch rather than a tag, so what they install changes under you over time. They are the right choice for model development work, and for the ``-cc`` and ``-is`` variants they are currently the only choice. See :doc:`contribute` for working that way.
+
+Versions do not update themselves
+=================================
+
+``awicm3-v3.2`` installs v3.2 and always will. It does not pick up ``v3.2.1`` or ``v3.2.2``, both of which are fixes on top of it, and no name anywhere tracks the newest patch in a line.
+
+That is deliberate, because a version named in a paper has to resolve to the same source forever. The cost is that fixes do not travel on their own: the ``L1PCTCO2`` fix released as v3.1.3 is in neither v3.2 nor v3.2.1.
+
+So check :doc:`releases` for the newest version in a line before you install, rather than assuming the shortest name is the newest.
+
+Releases carry all three numbers from v3.3.0 onward. Where this documentation writes a two number version it means the line of releases, not something you can install.
 
 What each name contains
 =======================
