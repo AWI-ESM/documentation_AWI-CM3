@@ -17,5 +17,6 @@ Welcome to the documention of the Alfred Wegener Institute Climate Model AWI-CM3
    releases
    contribute
    how_to
+   paleo
    workfolder
 
