@@ -4,6 +4,9 @@ XIOS output
 
 Change the number of vertical levels for pressure level output of OpenIFS
 =========================================================================
+
+Applies to: any setup with XIOS, so AWI-CM3 v3.1 and later and every AWI-ESM3. AWI-CM3 v3.0 has no IO server.
+
 Output in controlled via `XIOS <https://forge.ipsl.jussieu.fr/ioserver>`_. The pressure levels onto which the data is interpolated from model levels is set in ``axis_def.xml``. In principle two options exist. Changing the number of levels for all 3D pressue level output fields and changing the number of levels only for some output fields.
 
 For all fields

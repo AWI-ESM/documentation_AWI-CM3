@@ -4,9 +4,13 @@ LPJ-GUESS
 
 Branch off from existing LPJGuess restart
 =========================================
+
+Applies to: any setup with LPJ-GUESS, so AWI-ESM3 v3.4.0 and later including the ``-cc`` and ``-is`` variants, and never AWI-CM3.
+
 In the esm_tools runscript yaml file, in the lpj_guess: section add:
 
 .. code-block:: yaml
+
     ini_parent_exp_id: "AWIESM3_NTest309_Spinup_NoNlimitation_NoPatchdisturbances"
     ini_parent_date: "${prev_date}"
     ini_restart_dir: "/work/bb1469/a270270/runtime/awiesm3-v3.4/AWIESM3_NTest309_Spinup_NoNlimitation_NoPatchdisturbances/restart/lpj_guess"

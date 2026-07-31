@@ -71,9 +71,12 @@ Control is analogous to CMIP6 but we use ``LCMIP5``, ``CMIP5DATADIR``, and ``NRC
 
 For a more detailed look at the use of these forcing consult the source code file ``src/ifs/climate/updrgas.F90``
 
-Control Aerosol Scaling (AWI-CM3 v3.2 and v3.3)
-===============================================
-Aerosol Scaling is a feature only available in AWI-CM3 v3.2 and above. For older versions it is not implemented (effectively deactivated). It is controlled via the ``fort.4`` namelist parameter ``NAERANT_SCALE`` in the ``NAERAD`` namelist. By default it is set to ``1`` (activated). If activated, the default aerosol levels (which have an annual cycle that does not change over the years) are scaled according to the spatio-temporal field given in ``ifsdata/aerosol_scale_1850_2085_r2005.nc``. This is supposed to model the anthropogenic influence on aerosol levels over time. For running paleo-simulations one might want to deactivate this. This is best done via an entry in the esm-tools runscript:
+Control Aerosol Scaling
+=======================
+
+Applies to: AWI-CM3 v3.2 through v3.3.1 only. Before v3.2 it is not implemented, which has the same effect as deactivating it, and from v3.4.0 onwards the anthropogenic aerosol forcing comes from MACv2-SP instead, so none of this applies there.
+
+It is controlled via the ``fort.4`` namelist parameter ``NAERANT_SCALE`` in the ``NAERAD`` namelist. By default it is set to ``1`` (activated). If activated, the default aerosol levels (which have an annual cycle that does not change over the years) are scaled according to the spatio-temporal field given in ``ifsdata/aerosol_scale_1850_2085_r2005.nc``. This is supposed to model the anthropogenic influence on aerosol levels over time. For running paleo-simulations one might want to deactivate this. This is best done via an entry in the esm-tools runscript:
 
 .. code-block:: yaml
 

@@ -7,8 +7,11 @@ Use debug flags
 
 In case your model setup produces a segmentation fault it can be helpful to compile and run the model with debug flags. These can be set separatly for different executables in the coupled system. Here we mostly point you towards the locations that need to be modified in order to use debug flags. A comprehensive overview on which flags might help can be found at: https://doku.lrz.de/comparison-of-compiler-options-intel-vs-pgi-vs-gcc-11481685.html#ComparisonofCompilerOptions(intelvs.pgivs.gcc)-Diagnostics,RuntimeCheckingandDebugging
 
-OpenIFS cy43r3 (AWI-CM3 v3.2 and below)
----------------------------------------
+OpenIFS cy43r3
+--------------
+
+Applies to: AWI-CM3 v3.0 through v3.3.1, which are the versions built on the cy43r3 cycle.
+
 You can replace the OpenIFS Fortran compile and linker flags through esm_tools under ``esm_tools/configs/components/oifs/oifs.env.yaml`` by modifying ``OIFS_FFLAGS``. E.g:
 
 .. code-block:: yaml
@@ -22,8 +25,11 @@ You can replace the OpenIFS Fortran compile and linker flags through esm_tools u
 Make sure you pick the right HPC system and use flags that fit to the compiler which is being used (see compiletime log output).
 
 
-OpenIFS cy48r1 (AWI-CM3 v3.3 and above)
----------------------------------------
+OpenIFS cy48r1
+--------------
+
+Applies to: AWI-CM3 v3.4.0 and later, and every AWI-ESM3, which are the versions built on the cy48r1 cycle.
+
 TBA.
 
 
@@ -81,6 +87,8 @@ In order to change the compiler settings you replace the ``target_compile_option
 
 for XIOS
 --------
+
+Applies to: any setup with XIOS, so AWI-CM3 v3.1 and later and every AWI-ESM3. AWI-CM3 v3.0 has no IO server.
 
 For the IO server debug flags can be set inside the xios source code folder at: ``awicm3-v3.2/xios/arch.fcm``. The exact path may vary by model version. Here you want to add some of the DEV and DEBUG flags to the BASE flags for Fortran or C, as appropriate:
 
