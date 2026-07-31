@@ -126,13 +126,15 @@ pitfalls                   merged from known_errors and pitfalls_and_solutions
 
 `how_to.rst` is 514 lines against a healthy maximum of about 287, and `-cc` plus `-is` would push it past 800. The component split is the natural cut and is content preserving.
 
-## Work needed in esm_tools
+## How the feature switches actually behave
 
-Two things to fix in esm_tools before the documentation can describe the feature switches honestly. Neither blocks the phases below.
+Checked against esm_tools rather than assumed, because the two variants look inconsistent and are not.
 
-**Make the switch placement consistent, then state the rule.** The working rule today is that a switch which needs a recompile belongs to the install target, and a switch which only changes what runs belongs in the runscript. `-is` follows it cleanly: `develop-is` brings the PISM and dEBM binaries, `interactive_mesh` turns the coupling on at runtime, and it only injects workflow subjobs and `regen_oasis_weights`. `-cc` bundles all three CO2 switches onto the version, although only `with_co2_oce_coupling` is build affecting, since it selects `branch: fesom2.6_recom_awiesm3_co2_coupling` and adds `recom_comp_flag: -DRECOM_COUPLED=ON`. The bundling is defensible because the three are only meaningful together, but the rule cannot be written down as a rule until the exceptions are deliberate.
+The rule is that a switch which needs a recompile is owned by the version, and a switch which only changes what runs is set in the runscript. The mechanism enforcing it is where the switch is written. `interactive_mesh` is a plain `general` default, so a runscript can override it. The three `with_co2_*` switches are assigned inside every `choose_version` entry, so `choose_version` wins and a runscript cannot override them.
 
-**Guard the build affecting switches.** `with_co2_oce_coupling` is an ordinary `general` key with nothing stopping it being set in a runscript against a plain `develop` install. The result is a configuration asking for a FESOM branch the build does not have, with no error saying so. Either derive the three CO2 switches from the version so they cannot be set directly, or fail loudly when they are set against an install without the REcoM branch. Once that exists it becomes a pitfalls entry rather than a trap.
+Verified by check-running `awiesm3-develop` with `with_co2_oce_coupling: true` forced in the runscript. The resolved config came back with `with_co2_oce_coupling: False`, `fesom.branch: 2.7.0` rather than the REcoM branch, an empty `recom_comp_flag`, and no `XCO2_oce` coupling field. The runscript value was discarded.
+
+So there is no build against config mismatch to guard against, and nothing structural to fix. What is left is a documentation problem: the setting is accepted and silently ignored, with no message, so somebody asking for the carbon cycle this way gets a clean run without one. That is a pitfalls entry for phase 5, and the answer it should give is to install the `-cc` target instead.
 
 ## Phases
 
