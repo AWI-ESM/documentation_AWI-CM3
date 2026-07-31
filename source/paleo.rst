@@ -14,18 +14,18 @@ steps replace the older bash/CDO scripts.
 
 There are two levels to this, and they cost very different amounts of effort:
 
-**Level 1 — a new model resolution for a time slice that already exists.**
+**Level 1**: a new model resolution for a time slice that already exists.
 The reconstruction is unchanged; only the OpenIFS grid changes. This is a
 configuration change and a rerun of the tool, and is the common case when you
 move a published setup from, say, TCO95 to TCO319.
 
-**Level 2 — a new time slice.**
+**Level 2**: a new time slice.
 You supply a new reconstruction, and you also have to decide on the forcings
 that make it an equilibrium climate: greenhouse gases, orbit, and sea surface
 conditions. The tool handles the boundary condition files; the rest is a
 modelling decision.
 
-Both levels are described below. Read :ref:`what_the_tool_changes` first — it
+Both levels are described below. Read :ref:`what_the_tool_changes` first. It
 tells you which files come out and what has to agree with what.
 
 .. _what_the_tool_changes:
@@ -36,46 +36,34 @@ What the tool produces
 With ``paleo.enabled: true`` the pipeline runs four extra steps after the
 normal ones, writing into ``output/TCO{res}_{grid}/openifs_input_modified/``:
 
-.. list-table::
-   :header-rows: 1
-   :widths: 12 30 58
-
-   * - Step
-     - File
-     - What is changed
-   * - 13
-     - ``ICMGG{expid}INIT_{grid}``
-     - Land surface: ice sheets and snow, lakes, soils and soil water,
-       vegetation type/cover/LAI, and a distance-weighted fill of every other
-       surface field over points that changed between ocean and land.
-   * - 14
-     - ``ICMSH{expid}INIT_{exp_id}``
-     - Spectral orography, as a paleo-minus-modern anomaly added to the
-       existing field.
-   * - 14b
-     - ``ICMCL{expid}INIT_{exp_id}``
-     - The monthly albedo and LAI climatologies, given the same fill as the
-       surface fields so they agree with the new mask.
-   * - 15
-     - ``ICMGG{expid}INIT_{grid}``
-     - Subgrid-scale orography (``sdor``, ``isor``, ``anor``, ``slor``) via
-       ``calnoro``. Skipped unless ``calnoro_binary`` is set.
+- Step 13 writes ``ICMGG{expid}INIT_{grid}``: the land surface. Ice sheets and
+  snow, lakes, soils and soil water, vegetation type, cover and LAI, and a
+  distance-weighted fill of every other surface field over points that changed
+  between ocean and land.
+- Step 14 writes ``ICMSH{expid}INIT_{exp_id}``: the spectral orography, as a
+  paleo minus modern anomaly added to the existing field.
+- Step 14b writes ``ICMCL{expid}INIT_{exp_id}``: the monthly albedo and LAI
+  climatologies, given the same fill as the surface fields so that they agree
+  with the new mask.
+- Step 15 adds the subgrid-scale orography (``sdor``, ``isor``, ``anor``,
+  ``slor``) to the ICMGG via ``calnoro``. It is skipped unless
+  ``calnoro_binary`` is set.
 
 Alongside these, the normal steps write the OASIS files
 (``grids.nc``, ``areas.nc``, ``masks.nc``) into ``output/TCO{res}_{grid}/oasis_mct3_input/``.
-**Use them.** They carry the same land-sea mask as the ICMGG, and a coupled
-run whose coupler mask disagrees with its atmosphere mask will exchange fluxes
+Use them. They carry the same land-sea mask as the ICMGG, and a coupled run
+whose coupler mask disagrees with its atmosphere mask will exchange fluxes
 across points that no longer exist.
 
 Where the land-sea mask comes from
 ----------------------------------
 
-This catches people out. The mask is taken from **the ocean model grid** when
+This catches people out. The mask is taken from the ocean model grid when
 one is configured, because for a coupled run the FESOM2 mesh defines where the
 ocean is. The reconstruction ``*_LSM_*.nc`` is only used when there is no ocean
 mesh, i.e. in AMIP mode.
 
-So for a coupled paleo run you need a **FESOM2 mesh built for that time slice**.
+So for a coupled paleo run you need a FESOM2 mesh built for that time slice.
 Pointing a coupled configuration at a modern mesh gives you modern geography no
 matter what the reconstruction says. If you have no paleo mesh yet, an AMIP
 setup is the way to get the atmosphere side moving.
@@ -157,28 +145,17 @@ Level 2: a new time slice
 Here you supply the reconstruction. The tool expects these files, with
 ``{exp_id}`` replaced by ``paleo.experiment_id``:
 
-.. list-table::
-   :header-rows: 1
-   :widths: 34 66
-
-   * - File
-     - Contents
-   * - ``{exp_id}_LSM_v1.0.nc``
-     - Land-sea mask, 1 = land. Used in AMIP mode only, see above.
-   * - ``{exp_id}_topo_v1.0.nc``
-     - Surface elevation in m.
-   * - ``{exp_id}_icemask_v1.0.nc``
-     - 1 = ice free, 2 = ice sheet.
-   * - ``{exp_id}_lake_v1.0.nc``
-     - Lake cover.
-   * - ``{exp_id}_soil_v1.0.nc``
-     - Soil type.
-   * - ``{exp_id}_mbiome_v1.0.nc``
-     - Biome class, mapped to OpenIFS vegetation types, cover and LAI.
-   * - ``Modern_std_topo_v1.0.nc``
-     - Modern elevation, subtracted to form the topography anomaly.
-   * - ``Modern_std_soil_lake_v1.0.nc``
-     - Modern soil and lake reference.
+- ``{exp_id}_LSM_v1.0.nc``: land-sea mask, 1 = land. Used in AMIP mode only,
+  see above.
+- ``{exp_id}_topo_v1.0.nc``: surface elevation in m.
+- ``{exp_id}_icemask_v1.0.nc``: 1 = ice free, 2 = ice sheet.
+- ``{exp_id}_lake_v1.0.nc``: lake cover.
+- ``{exp_id}_soil_v1.0.nc``: soil type.
+- ``{exp_id}_mbiome_v1.0.nc``: biome class, mapped to OpenIFS vegetation
+  types, cover and LAI.
+- ``Modern_std_topo_v1.0.nc``: modern elevation, subtracted to form the
+  topography anomaly.
+- ``Modern_std_soil_lake_v1.0.nc``: modern soil and lake reference.
 
 All are on a regular 1x1 degree grid. The two ``Modern_std`` files are the
 reference the anomalies are taken against and must come from the same
@@ -253,7 +230,7 @@ Point the OpenIFS input at the tool output:
         ICMGG_INIUA: '/path/to/output/.../ICMGGab45INIUA'
         ICMSH_INIT:  '/path/to/output/.../ICMSHab45INIT_LP'
 
-The ICMCL is the exception. It is **not** an ``input_sources`` entry: esm-tools
+The ICMCL is the exception. It is not an ``input_sources`` entry: esm-tools
 builds ``ICMCL_INIT`` from two other variables, so an override placed in
 ``input_sources`` is silently discarded and you keep the modern climatology
 without any warning. Override these instead:
@@ -301,7 +278,7 @@ five entries:
   GRIB CODE 228038 READ FROM GRIB FILE INTO SNOWG 05
 
 The land point count in the staged ICMGG should differ from the modern
-template. If it does not, the reconstruction never reached the model — in a
+template. If it does not, the reconstruction never reached the model. In a
 coupled run that usually means the ocean mesh is a modern one.
 
 Known limitations
