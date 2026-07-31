@@ -150,27 +150,13 @@ For small meshes you can also wait for the GAUSWGT remapping files to be created
 Reorder existing OASIS3MCT files for a different FESOM2 core count
 ==================================================================
 
-The ``rmp_`` weight files and the OASIS restart files (``rstos``, ``rstas``) depend on the FESOM2 mesh partition, because the FESOM2 side of the coupling is addressed in PE contiguous order: the global nodes are listed rank by rank, in the order the partitioner assigned them. Change the ``dist`` and the addressing changes with it, even though the mesh, the atmosphere grid and the weight values themselves are all unchanged.
+The ``rmp_`` weight files and the OASIS restart files depend on the FESOM2 mesh partition, because the FESOM2 side of the coupling is addressed in PE contiguous order: the global nodes are listed rank by rank, in the order the partitioner assigned them. Change the ``dist`` and the addressing changes with it, even though the mesh, the atmosphere grid and the weight values themselves are all unchanged.
 
-Regenerating the weights for the new core count is what the previous section describes, and on a large grid it costs hours to months of compute plus a fair amount of manual work. You only have to pay that once per grid pair. If you already have a working set of files for any FESOM2 core count on the same grid pair, the `oasis_reorder_tool <https://github.com/AWI-ESM/oasis_reorder_tool>`_ permutes the files you have into the ordering of the new partition instead. For the 3.1 million node ``dars2`` mesh, about 5 GB of NetCDF, that takes five to ten seconds.
+Regenerating them, as above, is one way to get a set for the new core count, and on a large grid it costs hours to months. You only have to pay that once per grid pair. If you already hold a working set for any FESOM2 core count on the same grid pair, the `oasis_reorder_tool <https://github.com/AWI-ESM/oasis_reorder_tool>`_ permutes what you have into the ordering of the new partition instead. For the 3.1 million node ``dars2`` mesh, about 5 GB of NetCDF, that takes five to ten seconds. It reorders ``rmp_*.nc``, ``rstos*``, ``rstas*`` and ``vegin.nc``, and does not touch anything else in the directory.
 
-The tool never computes a weight. It only rearranges values that are already in the files, so it can move you between core counts but not onto a new grid pair. See :ref:`oasis_reorder_limits` before you plan around it.
+The tool never computes a weight, it only rearranges values that are already in the files. So it moves you between core counts, and it is no help for a grid pair that has no ``rmp_`` files yet: a new FESOM2 mesh or a new OpenIFS truncation still needs the offline generation above, or a low resolution run that generates the weights on the fly.
 
-How it works
-------------
-
-Every FESOM2 mesh partition directory contains an ``rpart.out`` that maps global nodes onto ranks. Reading ``dist_OLD/rpart.out`` and ``dist_NEW/rpart.out`` gives, for each natural global node, its position in the old and in the new PE contiguous ordering. Composing the two yields the permutation, which is then applied file by file:
-
-- In the ``rmp_`` files the ``src_address`` and ``dst_address`` integers are remapped value by value, but only where the matching ``*_grid_size`` equals ``nod2D``, that is, only on the FESOM2 side of the coupling. The remapping weights themselves are not touched.
-- Any other variable that has a dimension of size ``nod2D``, the OASIS restarts for example, is permuted along that dimension. Both 1D and 2D variables are handled.
-- Everything else is copied unchanged.
-
-The file list is discovered at runtime and is fixed: ``rmp_*.nc``, ``rstos.nc``, ``rstos.nc_recv``, ``rstas.nc``, ``rstas.nc_recv`` and ``vegin.nc``. The ``rmp_`` glob is resolution and map agnostic, so it matches any grid names and any interpolation suffix (``GAUSWGT``, ``GAUSWGT_25``, ``BICUBIC``). Entries that do not exist in the input directory are skipped silently, and anything in the input directory that is not on the list is neither reordered nor copied.
-
-Build
------
-
-The tool is a single Fortran source file using MPI and OpenMP, and NetCDF-Fortran is its only dependency, so moving it to another machine is a matter of swapping the modules. The build takes a couple of seconds. On levante:
+It is one Fortran source file with NetCDF-Fortran as its only dependency, so moving it to another machine is a module swap. On levante:
 
 .. code-block:: bash
 
@@ -181,12 +167,9 @@ The tool is a single Fortran source file using MPI and OpenMP, and NetCDF-Fortra
    module load netcdf-fortran/4.5.3-intel-oneapi-mpi-2021.5.0-intel-2021.5.0
    make
 
-If you build it elsewhere, keep the ``-heap-arrays 64`` that the ``Makefile`` sets and run with ``ulimit -s unlimited``. Without both, NetCDF-Fortran is handed compiler generated stack temporaries that overflow and ``nf90_get_var`` segfaults, but only once the mesh reaches a few million nodes, so a small test mesh will not show it to you.
+If you build it elsewhere, keep the ``-heap-arrays 64`` that the ``Makefile`` sets and run with ``ulimit -s unlimited``. Without both, ``nf90_get_var`` overflows the stack on compiler generated temporaries, and only once the mesh reaches a few million nodes, so a small test mesh will not show it to you.
 
-Run
----
-
-Set the four paths at the top of ``submit.sh``:
+Then set the four paths at the top of ``submit.sh``, the two FESOM2 mesh partition directories and the two OASIS pool directories, and submit it:
 
 .. code-block:: bash
 
@@ -195,62 +178,9 @@ Set the four paths at the top of ``submit.sh``:
    OASIS_IN=/work/ab0246/a270092/input/oasis/cy48r1/TCO319-DARS2/5120
    OASIS_OUT=/work/ab0246/a270092/input/oasis/cy48r1/TCO319-DARS2/2560
 
-``DIST_OLD`` and ``DIST_NEW`` are the FESOM2 mesh partition directories, ``OASIS_IN`` is the pool directory holding the files you already have, and ``OASIS_OUT`` is where the reordered set is written. Set ``--account`` and ``--chdir`` to your own project and working directory as well, then submit:
+Leave the rest of ``submit.sh`` as it is unless you are on another machine, since it carries the launcher settings levante needs and the repository README explains them. Afterwards point the experiment at ``OASIS_OUT`` and run with the new ``dist``.
 
-.. code-block:: bash
-
-   sbatch submit.sh
-
-``run.sh`` carries the same launch logic for an interactive shell. Besides the paths, ``submit.sh`` also carries ``srun --mpi=pmi2`` and ``I_MPI_PMI_LIBRARY``, which is what levante needs to launch this binary at all, and ``--chdir``, without which ``srun`` execs from the spool directory and does not find it. The repository README explains each. Change only the paths unless you are on another machine. Afterwards point the experiment at ``OASIS_OUT`` and run with the new ``dist``.
-
-A successful run reports the node count it deduced and the number of files it found, and then says nothing else:
-
-.. code-block:: bash
-
-  [rank 0] reading <DIST_OLD>/rpart.out
-  [rank 0] reading <DIST_NEW>/rpart.out
-  [rank 0] nod2D = <surface nodes>
-  [rank 0] remap built (<seconds> s)
-  [rank 0] processing <n> files round-robin across ranks
-
-Check the node count against your mesh, and check the file count. There are two ways the setup can be wrong that the tool catches itself, both fatal:
-
-.. code-block:: bash
-
-  ERROR: nod2D mismatch between rpart.out files:   <old>   <new>
-  ERROR: remap permutation is invalid
-
-The first means ``DIST_OLD`` and ``DIST_NEW`` are partitions of different meshes. The second means an ``rpart.out`` is not a permutation of the global nodes, in practice a truncated or half written partition file. A file count of ``0`` is neither fatal nor reported as an error, so if the job finishes instantly, read that line: it means ``OASIS_IN`` held nothing the tool recognises, and ``OASIS_OUT`` is empty.
-
-Check that it really worked
----------------------------
-
-A reordered file cannot be compared byte by byte against an independently generated one, because reordering and a fresh SCRIP run differ both in file metadata and in floating point rounding. What has to hold instead is that every variable in the output contains exactly the same set of values as the input, only permuted. Comparing sorted hashes tests that:
-
-.. code-block:: python
-
-   import numpy as np, hashlib
-   from netCDF4 import Dataset
-
-   def vh(ds, vn):
-       a = np.asarray(ds.variables[vn][...]).ravel()
-       return hashlib.sha256(np.sort(a).tobytes()).hexdigest()[:16]
-
-   a, b = Dataset(IN), Dataset(OUT)
-   for vn in sorted(set(a.variables) & set(b.variables)):
-       print(vn, vh(a, vn) == vh(b, vn))
-
-For the ``dars2`` mesh this passes on all 7 variables of ``rstos.nc`` and all 19 of ``rmp_A320_to_feom_BICUBIC.nc``. A run that starts is not proof that the reordering was right: a wrong permutation gives you a model that couples happily and exchanges fluxes between the wrong points, which you will only notice in the fields.
-
-.. _oasis_reorder_limits:
-
-What the tool does not do
--------------------------
-
-- It does not generate weights. Without an existing ``rmp_`` set for the same grid pair there is nothing to permute, and you are back to the offline generation in the previous section, or to a low resolution run that generates the weights on the fly.
-- It does not help across a grid change. A new FESOM2 mesh or a new OpenIFS resolution is a new grid pair, even if the file names look familiar.
-- It does not leave you a complete pool directory. ``areas.nc``, ``grids.nc``, ``masks.nc`` and everything else outside the file list are not copied into ``OASIS_OUT`` at all, so check what actually landed there and bring the rest over yourself. Those three do not depend on the FESOM2 core count, so the existing ones can be reused as they are.
-- It does not check that the ``rmp_`` files you gave it belong to ``DIST_OLD``. The two ``rpart.out`` files are checked against each other, but nothing ties either of them to the contents of ``OASIS_IN``. Feed it weights from a different partition and it will happily write a wrongly permuted set. Keep the pool directories named after their core count, as in the paths above.
+Two things are worth checking before you trust the result. ``OASIS_OUT`` is not a complete pool directory: ``areas.nc``, ``grids.nc`` and ``masks.nc`` are not copied into it, so bring them over yourself, unchanged, as they do not depend on the FESOM2 core count. And a wrong permutation does not crash anything, it gives you a model that couples happily and exchanges fluxes between the wrong points, which you will only see in the fields. The sorted hash check in the README tests the property that matters, that every variable in the output holds the same set of values as the input and only their order changed.
 
 
 Select an SSP or RCP scenario
