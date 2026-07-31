@@ -106,6 +106,8 @@ Step-by-step procedure
 Generate OASIS3MCT remapping weights for large grids (offline and MPI+OMP parallel)
 =========
 
+This section is about generating ``rmp_`` files from scratch, for a grid pair that has none. If what you actually want is the same grid pair at a different FESOM2 core count, and you already hold a working set of ``rmp_`` files for some other core count, skip all of this and see :ref:`oasis_reorder` instead. It does the same job in seconds.
+
 Before you start, make sure that you:
  
 - Obtain the FESOM2 mesh and generate the mesh distribution you would like to use.
@@ -142,6 +144,48 @@ For small meshes you can also wait for the GAUSWGT remapping files to be created
 - Copy oasis restart files into pool dir
 - Start full speed simulation with oasis ``lresume=true`` to generate oasis restart files
 
+
+.. _oasis_reorder:
+
+Reorder existing OASIS3MCT files for a different FESOM2 core count
+==================================================================
+
+The ``rmp_`` weight files and the OASIS restart files depend on the FESOM2 mesh partition, because the FESOM2 side of the coupling is addressed in PE contiguous order: the global nodes are listed rank by rank, in the order the partitioner assigned them. Change the ``dist`` and the addressing changes with it, even though the mesh, the atmosphere grid and the weight values themselves are all unchanged.
+
+Regenerating them, as above, is one way to get a set for the new core count, and on a large grid it costs hours to months. You only have to pay that once per grid pair. If you already hold a working set for any FESOM2 core count on the same grid pair, the `oasis_reorder_tool <https://github.com/AWI-ESM/oasis_reorder_tool>`_ permutes what you have into the ordering of the new partition instead. For the 3.1 million node ``dars2`` mesh, about 5 GB of NetCDF, that takes five to ten seconds. It reorders ``rmp_*.nc``, ``rstos*``, ``rstas*`` and ``vegin.nc``, and does not touch anything else in the directory.
+
+The tool never computes a weight, it only rearranges values that are already in the files. So it moves you between core counts, and it is no help for a grid pair that has no ``rmp_`` files yet: a new FESOM2 mesh or a new OpenIFS truncation still needs the offline generation above, or a low resolution run that generates the weights on the fly.
+
+It is one Fortran source file with NetCDF-Fortran as its only dependency, so moving it to another machine is a module swap. On levante:
+
+.. code-block:: bash
+
+   git clone https://github.com/AWI-ESM/oasis_reorder_tool
+   cd oasis_reorder_tool
+   module load intel-oneapi-compilers/2023.2.1-gcc-11.2.0
+   module load intel-oneapi-mpi/2021.5.0-intel-2021.5.0
+   module load netcdf-fortran/4.5.3-intel-oneapi-mpi-2021.5.0-intel-2021.5.0
+   make
+
+If you build it elsewhere, keep the ``-heap-arrays 64`` that the ``Makefile`` sets and run with ``ulimit -s unlimited``. Without both, ``nf90_get_var`` overflows the stack on compiler generated temporaries, and only once the mesh reaches a few million nodes, so a small test mesh will not show it to you.
+
+Then set the four paths at the top of ``submit.sh``, the two FESOM2 mesh partition directories and the two OASIS pool directories, and submit it:
+
+.. code-block:: bash
+
+   DIST_OLD=/work/ab0246/a270092/input/fesom2/dars2/dist_5120
+   DIST_NEW=/work/ab0246/a270092/input/fesom2/dars2/dist_2560
+   OASIS_IN=/work/ab0246/a270092/input/oasis/cy48r1/TCO319-DARS2/5120
+   OASIS_OUT=/work/ab0246/a270092/input/oasis/cy48r1/TCO319-DARS2/2560
+
+Leave the rest of ``submit.sh`` as it is unless you are on another machine, since it carries the launcher settings levante needs and the repository README explains them. Afterwards ``esm_runscripts`` picks the reordered files up by itself once you ask for the new core count:
+
+.. code-block:: yaml
+
+   fesom:
+       nproc: 2560
+
+Do check the result, because a wrong permutation does not crash anything. It gives you a model that couples happily and exchanges fluxes between the wrong points, which you will only see in the fields. The sorted hash check in the README tests the property that matters, that every variable in the output holds the same set of values as the input and only their order changed.
 
 
 Select an SSP or RCP scenario
