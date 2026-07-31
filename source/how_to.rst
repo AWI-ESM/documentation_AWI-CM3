@@ -178,7 +178,7 @@ Then set the four paths at the top of ``submit.sh``, the two FESOM2 mesh partiti
    OASIS_IN=/work/ab0246/a270092/input/oasis/cy48r1/TCO319-DARS2/5120
    OASIS_OUT=/work/ab0246/a270092/input/oasis/cy48r1/TCO319-DARS2/2560
 
-Leave the rest of ``submit.sh`` as it is unless you are on another machine, since it carries the launcher settings levante needs and the repository README explains them. Afterwards the runscript picks the reordered files up by itself once you ask for the new core count:
+Leave the rest of ``submit.sh`` as it is unless you are on another machine, since it carries the launcher settings levante needs and the repository README explains them. Afterwards ``esm_runscripts`` picks the reordered files up by itself once you ask for the new core count:
 
 .. code-block:: yaml
 
