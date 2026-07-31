@@ -29,17 +29,6 @@ The esm_master target is the name lowercased with the family run together, follo
 
 Targets ending in ``develop`` follow a branch rather than a tag, so what they install changes under you over time. They are the right choice for model development work, and for the ``-cc`` and ``-is`` variants they are currently the only choice. See :doc:`contribute` for working that way.
 
-Versions do not update themselves
-=================================
-
-``awicm3-v3.2`` installs v3.2 and always will. It does not pick up ``v3.2.1`` or ``v3.2.2``, both of which are fixes on top of it, and no name anywhere tracks the newest patch in a line.
-
-That is deliberate, because a version named in a paper has to resolve to the same source forever. The cost is that fixes do not travel on their own: the ``L1PCTCO2`` fix released as v3.1.3 is in neither v3.2 nor v3.2.1.
-
-So check :doc:`releases` for the newest version in a line before you install, rather than assuming the shortest name is the newest.
-
-Releases carry all three numbers from v3.3.0 onward. Where this documentation writes a two number version it means the line of releases, not something you can install.
-
 What each name contains
 =======================
 
@@ -89,6 +78,17 @@ A section that applies to every setup says nothing about it. A section that does
    Applies to: any setup with LPJ-GUESS (AWI-ESM3 v3.4 and later).
 
 The scope is written in terms of components and feature switches rather than model names wherever it can be, because that is how esm_tools gates them and because it stays correct if a new variant appears. A section marked as applying to setups with LPJ-GUESS applies to AWI-ESM3, to ``-cc`` and to ``-is`` without having to list all three and without having to be edited when a fourth arrives.
+
+Versions do not update themselves
+=================================
+
+``awicm3-v3.2`` installs v3.2 and always will. It does not pick up ``v3.2.1`` or ``v3.2.2``, both of which are fixes on top of it, and no name anywhere tracks the newest patch in a line.
+
+That is deliberate, because a version named in a paper has to resolve to the same source forever. The cost is that fixes do not travel on their own: the ``L1PCTCO2`` fix released as v3.1.3 is in neither v3.2 nor v3.2.1.
+
+So check :doc:`releases` for the newest version in a line before you install, rather than assuming the shortest name is the newest.
+
+Releases carry all three numbers from v3.3.0 onward. Where this documentation writes a two number version it means the line of releases, not something you can install.
 
 What this page does not tell you
 ================================
