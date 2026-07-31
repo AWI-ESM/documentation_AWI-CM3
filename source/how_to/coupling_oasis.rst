@@ -5,7 +5,7 @@ Coupling and OASIS
 Measure which component is limiting the throughput of the coupled model
 =======================================================================
 
-OASIS times every component and tells you which one the others are waiting for. It is off by default, and you turn it on in the runscript:
+OASIS times every component and tells you which one the others are waiting for. It costs about 1 percent of runtime, which is why it is off by default, so turn it on for a run you are using to balance the setup and turn it off again for production:
 
 .. code-block:: yaml
 
