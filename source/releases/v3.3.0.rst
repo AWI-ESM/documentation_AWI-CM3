@@ -6,5 +6,7 @@ Changes to previous version
 ===========================
 - Updated FESOM2 from version 2.5 to 2.6.8 `FESOM2 release 2.6 <https://github.com/FESOM/fesom2/releases/tag/2.6.9>`_.
 
+``v3.3.1`` is installable and produces bit identical results to ``v3.3.0``, so the evaluation below covers both and it has no page of its own.
+
 .. raw:: html
    :file: 3.3/display.html
