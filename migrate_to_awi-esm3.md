@@ -173,14 +173,23 @@ Open, carried into later phases:
 - [ ] `quickstart.rst`: one block per setup, including the `-is` two runscript `--coupling-chain` form.
 - [ ] `before_you_start.rst`: LPJ-GUESS, PISM, dEBM and REcoM licences, and the component list per setup.
 
-### Phase 4: the new pages (1 to 2 days)
+### Phase 4: the new pages. Deferred.
 
 - [ ] `how_to/carbon_cycle.rst`.
 - [ ] `how_to/ice_sheet.rst`.
 
-Only phase that needs knowledge not already written down. Raw material exists in the moving cavity crash investigation report and the `crashhunt` and `bisect` runscript families under `pism_repro/scripts_is`.
+Deferred deliberately. Both variants exist only on `develop` so far, neither is released, and neither is described in a paper. Anything written now would document an interface that is still moving, and would be stale before the first reader arrives.
 
-### Phase 5: ongoing
+The trigger to start is the v3.5.0 release, at which point the switches and runscripts stop moving, or the papers, expected 2027 for `-cc` and 2028 for `-is`, whichever lands first.
+
+Raw material is already identified and does not need finding again. For `-is`: the moving cavity investigation report at `postprocessing/investigation_awiesm3_moving_cavity_crash/report/moving_cavity_investigation.tex`, 1300 lines with named bugs, a verified switch set, a "what is proven" section and struck-through falsified claims, plus the `crashhunt` and `bisect` runscript families under `pism_repro/scripts_is`. For `-cc`: nothing written down yet beyond the esm_tools plumbing.
+
+When it does start, the filter is the two-year test in the curated-guides decision above. Most of that report is campaign history, bugs found and fixed, which does not belong here. What belongs is whatever is still true for a new user: the switch set they have to set themselves, the bootstrap they cannot produce without the pool directory, and the open limitations.
+
+### Phase 5: ongoing. Not blocked by phase 4.
+
+Both items below concern components that are already released, so they proceed while phase 4 waits. `workfolder.rst` gets its per-component split for OpenIFS, FESOM2, OASIS3-MCT, XIOS and LPJ-GUESS now, and leaves empty slots for PISM and REcoM rather than guessing at file lists that are still changing.
+
 
 - [ ] Restructure `workfolder.rst` per component, with feature gates, keeping the grid table form.
 - [ ] Decide whether `AWI-ESM/common-errors` is revived or retired, since the pitfalls page links to it.
