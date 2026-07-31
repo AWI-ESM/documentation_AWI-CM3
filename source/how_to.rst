@@ -178,9 +178,14 @@ Then set the four paths at the top of ``submit.sh``, the two FESOM2 mesh partiti
    OASIS_IN=/work/ab0246/a270092/input/oasis/cy48r1/TCO319-DARS2/5120
    OASIS_OUT=/work/ab0246/a270092/input/oasis/cy48r1/TCO319-DARS2/2560
 
-Leave the rest of ``submit.sh`` as it is unless you are on another machine, since it carries the launcher settings levante needs and the repository README explains them. Afterwards point the experiment at ``OASIS_OUT`` and run with the new ``dist``.
+Leave the rest of ``submit.sh`` as it is unless you are on another machine, since it carries the launcher settings levante needs and the repository README explains them. Afterwards the runscript picks the reordered files up by itself once you ask for the new core count:
 
-Two things are worth checking before you trust the result. ``OASIS_OUT`` is not a complete pool directory: ``areas.nc``, ``grids.nc`` and ``masks.nc`` are not copied into it, so bring them over yourself, unchanged, as they do not depend on the FESOM2 core count. And a wrong permutation does not crash anything, it gives you a model that couples happily and exchanges fluxes between the wrong points, which you will only see in the fields. The sorted hash check in the README tests the property that matters, that every variable in the output holds the same set of values as the input and only their order changed.
+.. code-block:: yaml
+
+   fesom:
+       nproc: 2560
+
+Do check the result, because a wrong permutation does not crash anything. It gives you a model that couples happily and exchanges fluxes between the wrong points, which you will only see in the fields. The sorted hash check in the README tests the property that matters, that every variable in the output holds the same set of values as the input and only their order changed.
 
 
 Select an SSP or RCP scenario
