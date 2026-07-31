@@ -29,26 +29,30 @@ The esm_master target is the name lowercased with the family run together, follo
 
 Targets ending in ``develop`` follow a branch rather than a tag, so what they install changes under you over time. They are the right choice for model development work, and for the ``-cc`` and ``-is`` variants they are currently the only choice. See :doc:`contribute` for working that way.
 
-What each name contains
-=======================
+AWI-CM3
+=======
 
-Component versions below are quoted for v3.4.2, the newest released version at the time of writing. For the authoritative list of what exists, read the ``available_versions`` block in the setup YAML, since it is updated before this page is.
-
-**AWI-CM3**: the atmosphere ocean model, with no land or ice sheet components.
+The atmosphere ocean model, with no land or ice sheet components.
 
 - Components: OpenIFS, FESOM2, XIOS, OASIS3-MCT and the runoff mapper. At v3.4.2 esm_tools builds these from ``oifs-48r1v4``, ``fesom-2.7.7``, ``xios-2.5.3``, ``oasis3mct-5.2`` and ``rnfmap-v1.3``.
 - Setup: ``awicm3``. Versions v3.0 through v3.4.2, plus ``develop``.
 - Install: ``esm_master install-awicm3-v3.4.2``. Runscripts in ``esm_tools/runscripts/awicm3/v3.4.2/``.
 - Cite: Streffing et al. (2022), https://doi.org/10.5194/gmd-15-6399-2022.
 
-**AWI-ESM3**: AWI-CM3 plus interactive vegetation.
+AWI-ESM3
+========
+
+AWI-CM3 plus interactive vegetation.
 
 - Components: everything AWI-CM3 has, plus LPJ-GUESS.
 - Setup: ``awiesm3``. Versions v3.4.0 through v3.4.2, plus ``develop``.
 - Install: ``esm_master install-awiesm3-v3.4.2``. Runscripts in ``esm_tools/runscripts/awiesm3/v3.4.2/``.
 - Cite: paper in preparation, expected 2027. Until it appears, cite Streffing et al. (2022) for the coupled core and the LPJ-GUESS references for the vegetation.
 
-**AWI-ESM3-cc**: AWI-ESM3 as a full carbon cycle model.
+AWI-ESM3-cc
+===========
+
+AWI-ESM3 as a full carbon cycle model.
 
 - Components: everything AWI-ESM3 has, plus REcoM ocean biogeochemistry inside FESOM2 and a prognostic CO2 tracer in OpenIFS.
 - It also brings the OASIS coupling that actually closes the carbon cycle, which no other setup here has. CO2 is exchanged with the ocean through ``rst_co2_ao.nc`` and with the vegetation through ``rst_co2_av.nc``, so ``-cc`` runs with extra coupling fields and a larger OASIS restart set than everything else in this family.
@@ -57,7 +61,10 @@ Component versions below are quoted for v3.4.2, the newest released version at t
 - Install: ``esm_master install-awiesm3-develop-cc``.
 - Cite: paper in preparation, expected 2027.
 
-**AWI-ESM3-is**: AWI-ESM3 with a coupled ice sheet.
+AWI-ESM3-is
+===========
+
+AWI-ESM3 with a coupled ice sheet.
 
 - Components: everything AWI-ESM3 has, plus PISM and dEBM. Couples orography, surface mass balance, the moving sub ice shelf cavity and icebergs.
 - Setup: ``awiesm3``, version ``develop-is``. In development and running; to be released with v3.5.0.
