@@ -88,7 +88,7 @@ In order to change the compiler settings you replace the ``target_compile_option
 for XIOS
 --------
 
-Applies to: any setup with XIOS, so AWI-CM3 v3.1 and later and every AWI-ESM3. AWI-CM3 v3.0 has no IO server.
+Applies to: AWI-CM3 v3.1 and later, and every AWI-ESM3. AWI-CM3 v3.0 has no IO server.
 
 For the IO server debug flags can be set inside the xios source code folder at: ``awicm3-v3.2/xios/arch.fcm``. The exact path may vary by model version. Here you want to add some of the DEV and DEBUG flags to the BASE flags for Fortran or C, as appropriate:
 

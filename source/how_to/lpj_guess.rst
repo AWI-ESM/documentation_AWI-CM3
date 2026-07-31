@@ -5,8 +5,6 @@ LPJ-GUESS
 Branch off from existing LPJGuess restart
 =========================================
 
-Applies to: any setup with LPJ-GUESS, so AWI-ESM3 v3.4.0 and later including the ``-cc`` and ``-is`` variants, and never AWI-CM3.
-
 In the esm_tools runscript yaml file, in the lpj_guess: section add:
 
 .. code-block:: yaml
