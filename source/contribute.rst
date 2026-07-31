@@ -65,9 +65,11 @@ This documentation covers AWI-CM3 and AWI-ESM3 together, including the ``-cc`` a
 
 .. code-block:: text
 
-   Applies to: any setup with LPJ-GUESS (AWI-ESM3 v3.4 and later).
+   Applies to: AWI-CM3 v3.2 through v3.3.1 only.
 
-Write the scope in terms of components and feature switches rather than model names wherever you can, because that is how esm_tools gates them in ``choose_version``, and because it stays correct when a new variant appears. A section marked as applying to setups with LPJ-GUESS already covers AWI-ESM3, ``-cc`` and ``-is`` without listing all three, and without needing an edit when a fourth one arrives.
+A line earns its place when it names a **version boundary**, because that is the thing a reader cannot work out for themselves. Do not add one that only restates the page it sits on: a section about branching off an LPJ-GUESS restart, on a page called LPJ-GUESS, does not need to be told it requires LPJ-GUESS.
+
+Where a scope really is about a component or a feature switch rather than a version, write it that way, because that is how esm_tools gates them in ``choose_version`` and it stays correct when a new variant appears.
 
 Some older sections still carry their scope in the heading instead, for example ``Control Aerosol Scaling (AWI-CM3 v3.2 and v3.3)``. Those are being migrated to the line above. Do not write new ones in that form.
 

@@ -8,8 +8,8 @@ There is no single model documented here. There is a family that shares an atmos
 
 If you already know which setup you are on, you can leave. Everything else in this documentation is written to be read without it.
 
-How the names work
-==================
+How the model names work
+========================
 
 .. code-block:: text
 
@@ -75,16 +75,18 @@ AWI-ESM3 with a coupled ice sheet.
 
 ``-cc`` and ``-is`` have not been combined and combining them is not on the near term plan, so there is currently no setup here that has both a carbon cycle and an ice sheet.
 
-How this documentation marks what applies
-=========================================
+How this documentation marks which versions and setups a section applies to
+===========================================================================
 
-A section that applies to every setup says nothing about it. A section that does not opens with a single line naming the scope:
+Most of what differs between the setups is a version boundary: a namelist switch that only exists from one release onwards, a component that arrived later, an OpenIFS cycle that changed underneath. A section carrying such a boundary opens with a single line naming it:
 
 .. code-block:: text
 
-   Applies to: any setup with LPJ-GUESS (AWI-ESM3 v3.4 and later).
+   Applies to: AWI-CM3 v3.2 through v3.3.1 only.
 
-The scope is written in terms of components and feature switches rather than model names wherever it can be, because that is how esm_tools gates them and because it stays correct if a new variant appears. A section marked as applying to setups with LPJ-GUESS applies to AWI-ESM3, to ``-cc`` and to ``-is`` without having to list all three and without having to be edited when a fourth arrives.
+No line means the section applies everywhere. The line appears only where the boundary is not already obvious from the page you are on, so the LPJ-GUESS page does not bother telling you that it needs LPJ-GUESS.
+
+Where a scope really is about a component or a feature switch rather than a version, it is written that way, because that is how esm_tools gates them and it stays correct when a new variant appears.
 
 Versions do not update themselves
 =================================
