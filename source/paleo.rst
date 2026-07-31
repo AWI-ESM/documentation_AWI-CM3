@@ -108,9 +108,20 @@ the modifications are applied to.
   cd $OCP_TOOL_DIR
   python3 run_ocp_tool.py configs/your_config.yaml
 
-Do not reuse the OASIS ``rmp_`` weight files from the old resolution. They are
-grid pair specific and have to be regenerated; for large grids see
-:doc:`how_to` for the offline parallel weight generation.
+That gives you the boundary conditions and the OASIS files. The rest of a new
+resolution is esm-tools work that the tool does not touch:
+
+- The resolution has to exist under ``choose_resolution`` in the oifs config,
+  which sets ``nx``, ``time_step``, ``oasis_grid_name`` and ``res_number``.
+  Add an entry if the grid is genuinely new, and set ``nproc`` to something the
+  grid can be decomposed over.
+- The wave initial files (``cdwavein``, ``sfcwindin``, ``specwavein``,
+  ``wam_grid_tables``, ``wam_subgrid_0`` to ``_2``) are resolution specific and
+  are not produced by the tool. Take them from a standard experiment at that
+  grid, or run with ``wam: false``.
+- Do not reuse the OASIS ``rmp_`` weight files from the old resolution. They
+  are grid pair specific and have to be regenerated; for large grids see
+  :doc:`how_to` for the offline parallel weight generation.
 
 .. _model_cycle:
 
