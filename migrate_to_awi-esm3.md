@@ -51,7 +51,7 @@ Concretely, "run 26555148 aborted in `spinup_couplePI`" is an issue. "`interacti
 
 That keeps the pitfalls page at fifteen to twenty entries for the life of the project rather than hundreds.
 
-There is already a separate home for the rest: `AWI-ESM/common-errors`, "Common Runtime Errors and Recommended Fixes", public, last touched August 2024. The pitfalls page links out to it rather than absorbing it or competing with it. Whether that repository gets revived is a decision to take before phase 5, because if it stays dormant the pressure to dump errors into the documentation comes straight back.
+There is already a home for the rest: `AWI-ESM/project_management`, which holds several hundred past and present issues and is where most problems with this model have already been described. The pitfalls page points there rather than absorbing it. `AWI-ESM/common-errors` was considered and rejected: it was never actually used. Note that `project_management` is private, so the documentation says so and names who can grant access.
 
 `known_errors.rst` and `pitfalls_and_solutions.rst` are both empty stubs and the distinction between them was never defined. They merge into one page, because keeping two invites exactly the sprawl this rule exists to prevent.
 
@@ -153,7 +153,6 @@ So there is no build against config mismatch to guard against, and nothing struc
 Open, carried into later phases:
 
 - `before_you_start.rst` says "OASIS4 is available under LGPL" while linking the OASIS3-MCT page, and the model builds `oasis3mct-5.2`. Fix when phase 3 revisits that page for the new component licences.
-- `AWI-ESM/common-errors` has been dormant since August 2024 and `contribute.rst` now points people at it. Revive it or pick a different target before phase 5.
 - In esm_tools, `awicm3` version `v3.4.1` selects coupling `awicm3_v3.4.0` although `awicm3_v3.4.1` exists. Looks like a typo in that repository, not this one.
 
 ### Phase 1: split `how_to` (1 day)
@@ -192,7 +191,6 @@ Both items below concern components that are already released, so they proceed w
 
 
 - [ ] Restructure `workfolder.rst` per component, with feature gates, keeping the grid table form.
-- [ ] Decide whether `AWI-ESM/common-errors` is revived or retired, since the pitfalls page links to it.
-- [ ] Seed the merged `pitfalls.rst` from the `-is` bring-up, applying the two-year test to every candidate, and send everything that fails the test to `common-errors` instead.
+- [ ] Seed the merged `pitfalls.rst` from the `-is` bring-up, applying the two-year test to every candidate, and send everything that fails the test to `AWI-ESM/project_management` instead.
 
 Phases 0 to 3 are restructuring and can all land before v3.5 exists.
