@@ -1,176 +1,295 @@
-.. _chap_workfolder
+.. _chap_workfolder:
 
+*******************
 Workfolder contents
 *******************
 
-########################################
-Before the time integration of the model
-########################################
+What you find in ``run_{date}/work`` while a leg runs, grouped by the component that owns it. A coupled run leaves several thousand entries there, but nearly all of them are repeats of a handful of kinds, so this page lists kinds. ``{var}.fesom.{year}.nc`` is one entry here and several hundred on disk, and ``xios_client_{rank}.out`` is one entry and one file per client rank.
 
-+---------------------------+-------------+-------------------------------------------------+
-| File name                 | Type        | Description                                     |
-+===========================+=============+=================================================+
-| FESOM.mesh.diag           | input       | output of FESOM2 mesh diagnostics               |
-+---------------------------+-------------+-------------------------------------------------+
-| grids.nc                  | input       | center lon/lat for OASIS3MCT. Note: input file  |
-|                           |             | for OIFS but output file for FESOM2             |
-+---------------------------+-------------+-------------------------------------------------+
-| masks.nc                  | input       | land sea mask for OASIS3MCT. Note: input file   |
-|                           |             | for OIFS but output file for FESOM2             |
-+---------------------------+-------------+-------------------------------------------------+
-| areas.nc                  | input       | mesh area for OASIS3MCT. Note: input file       |
-|                           |             | for OIFS but output file for FESOM2             |
-+---------------------------+-------------+-------------------------------------------------+
-| ifsdata                   | input       | folder containing default OIFS gas and          |
-|                           |             | aerosol climatologies                           |
-+---------------------------+-------------+-------------------------------------------------+
-| *_MIDYR_CONC.txt          | input       | CMIP5 forcing files (optional CMIP6 via fort.4) |
-+---------------------------+-------------+-------------------------------------------------+
-| ICMGG{job_id}INIT         | input       | grid point inital and boundary conditions for   |
-|                           |             | OIFS                                            |
-+---------------------------+-------------+-------------------------------------------------+
-| ICMGG{job_id}INIUA        | input       | upper atmosphere inital and boundary conditions |
-|                           |             | for OIFS                                        |
-+---------------------------+-------------+-------------------------------------------------+
-| ICMSH{job_id}INIT         | input       | spherical harmonic inital and boundary          |
-|                           |             | conditions for OIFS                             |
-+---------------------------+-------------+-------------------------------------------------+
-| rmp_*                     | input       | OASIS3MCT remapping weight files. (optional,    |
-|                           |             | if not present they will be generated on the    |
-|                           |             | fly. This will take some time.)                 |
-+---------------------------+-------------+-------------------------------------------------+
-| rtables                   | input       | OIFS grib code tables                           |
-+---------------------------+-------------+-------------------------------------------------+
-| wam_grid_tables           | input       | WAM grib code tables                            |
-+---------------------------+-------------+-------------------------------------------------+
-| *l_*                      | input       | Ozone cilmatology and old disused inital &      |
-|                           |             | boundary conditions                             |
-+---------------------------+-------------+-------------------------------------------------+
-| runoff_maps.nc            | input       | contains river basins and discharge areas       |
-+---------------------------+-------------+-------------------------------------------------+
-| cdwavein                  | input       | input file from WAM wave model                  |
-|                           |             | (Apparent surface humidity)                     |
-+---------------------------+-------------+-------------------------------------------------+
-| sfcwindin                 | input       | WAM inital wind                                 |
-+---------------------------+-------------+-------------------------------------------------+
-| specwavein                | input       | WAM inital temperature                          |
-+---------------------------+-------------+-------------------------------------------------+
-| uwavein                   | input       | WAM inital surface roughness                    |
-+---------------------------+-------------+-------------------------------------------------+
-| wam_subgrid_0             | input       | Something for WAM, not quite sure..             |
-+---------------------------+-------------+-------------------------------------------------+
-| temp, tmp1 tmp2           | input       | used for esm-ksh tools                          |
-+---------------------------+-------------+-------------------------------------------------+
-| *red_points.txt           | input       | disused should remove it..                      |
-+---------------------------+-------------+-------------------------------------------------+
-| fort.4                    | ctrl        | OIFS namelists                                  |
-+---------------------------+-------------+-------------------------------------------------+
-| hostfile_srun             | ctrl        | controls the allocation of cores to executables |
-|                           |             | by calling prog* scripts                        |
-+---------------------------+-------------+-------------------------------------------------+
-| hostlist                  | ctrl        | contains list of all MPI tasks and the compute  | 
-|                           |             | node they run on                                |
-+---------------------------+-------------+-------------------------------------------------+
-| prog*                     | ctrl        | calling script* files while calculation OpenMP  |
-|                           |             | settings                                        |
-+---------------------------+-------------+-------------------------------------------------+
-| script*                   | ctrl        | calling executalbes with OpenMP settings        |
-+---------------------------+-------------+-------------------------------------------------+
-| namcouple                 | ctrl        | controls OASIS3MCT coupling fields, remapping   |
-|                           |             | and timing                                      |
-+---------------------------+-------------+-------------------------------------------------+
-| namelist.config           | ctrl        | controls FESOM2 general settings                |
-+---------------------------+-------------+-------------------------------------------------+
-| namelist.forcing          | ctrl        | controls FESOM2 forcing settings (not needed)   |
-+---------------------------+-------------+-------------------------------------------------+
-| namelist.ice              | ctrl        | controls FESOM2 sea ice settings                |
-+---------------------------+-------------+-------------------------------------------------+
-| namelist.oce              | ctrl        | controls FESOM2 sea ocean settings              |
-+---------------------------+-------------+-------------------------------------------------+
-| namelist.io               | ctrl        | controls FESOM2 output and diagnostic settings  |
-+---------------------------+-------------+-------------------------------------------------+
-| namelist.runoffmapper     | ctrl        | controls runoff mapper settings                 |
-+---------------------------+-------------+-------------------------------------------------+
-| wam_namelist              | ctrl        | controls WAM settings                           |
-+---------------------------+-------------+-------------------------------------------------+
-| FESOM.x                   | bin         | FESOM2 executable                               |
-+---------------------------+-------------+-------------------------------------------------+
-| master.exe                | bin         | OIFS executable                                 |
-+---------------------------+-------------+-------------------------------------------------+
-| rnfmap.exe                | bin         | Runoff mapper executable                        |
-+---------------------------+-------------+-------------------------------------------------+
+Types are ``input`` for something linked or copied in, ``ctrl`` for a namelist or configuration file, ``bin`` for an executable, ``output`` and ``restart`` for what the run produces, ``log`` for what you read afterwards and ``work`` for scratch that neither goes in nor comes out.
 
-########################################################
-Additional files after the time integration of the model
-########################################################
+Only the components your setup contains appear. See :doc:`model_family` if you are not sure which those are. The logs worth reading first when a run fails are not here at all, they are in ``run_{date}/log`` and in the experiment's parent ``log`` directory.
 
-+---------------------------+-------------+-------------------------------------------------+
-| debug.notroot*            | log         | OASIS3MCT logfile mostly empty                  |
-+---------------------------+-------------+-------------------------------------------------+
-| debug.root*               | log         | OASIS3MCT logfile containing debug              |
-|                           |             | controlled via namcouple variable NLOGPRT       |
-+---------------------------+-------------+-------------------------------------------------+
-| drhook*                   | log         | debug info from DR_HOOK ECMWF debug tool        |
-|                           |             | controlled via export DR_HOOK*                  |
-+---------------------------+-------------+-------------------------------------------------+
-| ifs.stat                  | log         | OIFS timestep length output                     |
-+---------------------------+-------------+-------------------------------------------------+
-| lucia*                    | log         | OASIS3MCT coupling timing information. use      |
-|                           |             | lucia tool to analyise computational balance    |
-+---------------------------+-------------+-------------------------------------------------+
-| NODE.001_01               | log         | very detailed logfile of the OIFS simulation    |
-+---------------------------+-------------+-------------------------------------------------+
-| nout.000000               | log         | logfile of the OASIS3MCT interpreting the       |
-|                           |             | namcouple file                                  |
-+---------------------------+-------------+-------------------------------------------------+
-| a2o*                      | output      | intermediate for gen of OASIS3MCT restart files |
-|                           |             | (only if first leg and LRESUME_oasis3mct=0)     |
-+---------------------------+-------------+-------------------------------------------------+
-| A_*                       | output      | intermediate for gen of OASIS3MCT restart files |
-|                           |             | (only if first leg and LRESUME_oasis3mct=0)     |
-+---------------------------+-------------+-------------------------------------------------+
-| *_fesom_*                 | output      | intermediate for gen of OASIS3MCT restart files |
-|                           |             | (only if first leg and LRESUME_oasis3mct=0)     |
-+---------------------------+-------------+-------------------------------------------------+
-| *.fesom.*                 | output      | FESOM2 output file                              |
-+---------------------------+-------------+-------------------------------------------------+
-| ICMGG{job_id}+000000      | output      | timestep 0 OIFS output not all fields. deleted  |
-+---------------------------+-------------+-------------------------------------------------+
-| ICMGG{job_id}+{year}{mon} | output      | OIFS gridpoint output                           |
-+---------------------------+-------------+-------------------------------------------------+
-| ICMSH{job_id}+{year}{mon} | output      | OIFS spherical harmonic output                  |
-+---------------------------+-------------+-------------------------------------------------+
-| ICMUA{job_id}+{year}{mon} | output      | OIFS upper atmosphere output                    |
-+---------------------------+-------------+-------------------------------------------------+
-| MPP*                      | output      | WAM wave model output                           |
-+---------------------------+-------------+-------------------------------------------------+
-| BLS*                      | restart     | for WAM wave model                              |
-+---------------------------+-------------+-------------------------------------------------+
-| LAW*                      | restart     | for WAM wave model                              |
-+---------------------------+-------------+-------------------------------------------------+
-| FESOM.${year}.ice*        | restart     | for FESOM2 ice model                            |
-+---------------------------+-------------+-------------------------------------------------+
-| FESOM.${year}.oce*        | restart     | for FESOM2 ocean model                          |
-+---------------------------+-------------+-------------------------------------------------+
-| FESOM.clock               | restart     | control file for FESOM2                         |
-+---------------------------+-------------+-------------------------------------------------+
-| rst*                      | restart     | for OASIS3MCT if run with lag                   |
-+---------------------------+-------------+-------------------------------------------------+
-| rcf                       | restart     | control file for OIFS                           |
-+---------------------------+-------------+-------------------------------------------------+
-| srf*                      | restart     | for OIFS (one per MPI task)                     |
-+---------------------------+-------------+-------------------------------------------------+
-| waminfo                   | restart     | control file for WAM                            |
-+---------------------------+-------------+-------------------------------------------------+
+OpenIFS
+=======
 
-#################################################################################
-Detailed description of coupling files and which ones can be generated on the fly
-#################################################################################
++----------------------------------------+-----------+----------------------------------------------------------------+
+| File name                              | Type      | Description                                                    |
++========================================+===========+================================================================+
+| ``ICMGG{expid}INIT``                   | input     | grid point initial and boundary conditions                     |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``ICMGG{expid}INIUA``                  | input     | upper atmosphere initial and boundary conditions               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``ICMSH{expid}INIT``                   | input     | spherical harmonic initial and boundary conditions             |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``ICMCL{expid}INIT``                   | input     | monthly albedo and LAI climatologies                           |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``ifsdata``                            | input     | folder of default gas and aerosol climatologies                |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``{res}_{trunc}``                      | input     | folder of GRIB climate fields for that grid. The suffix is the |
+|                                        |           | spectral truncation: ``_2`` linear, ``_3`` quadratic, ``_4``   |
+|                                        |           | cubic octahedral, so ``319_4`` is TCO319                       |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``slt_TCO{res}.nc``                    | input     | soil type map for the grid                                     |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``co2_input4MIPs_*.nc``                | input     | CMIP greenhouse gas concentrations                             |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``*_MIDYR_CONC.txt``                   | input     | CMIP5 forcing files (CMIP6 is selected in fort.4 instead)      |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``cdwavein``                           | input     | WAM apparent surface humidity                                  |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``sfcwindin``                          | input     | WAM initial wind                                               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``specwavein``                         | input     | WAM initial temperature                                        |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``uwavein``                            | input     | WAM initial surface roughness                                  |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``wam_grid_tables``                    | input     | WAM GRIB code tables                                           |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``wam_subgrid_0 to _2``                | input     | WAM subgrid definitions                                        |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``fort.4``                             | ctrl      | every OpenIFS namelist, including NAERAD and NAMORB            |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``wam_namelist``                       | ctrl      | WAM settings                                                   |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``OpenIFS``                            | bin       | OpenIFS executable, launched as ``OpenIFS -v ecmwf -e          |
+|                                        |           | {expid}``                                                      |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``NODE.001_01``                        | log       | the detailed OpenIFS run log                                   |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``ifs.stat``                           | log       | one line per timestep, useful to see how far a run got         |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``meminfo.txt``                        | log       | EC_MEMINFO memory report                                       |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``gstats.xml``                         | log       | GSTATS timing report, one item per code region                 |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``drhook*``                            | log       | DR_HOOK traceback output, only when DR_HOOK is exported        |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``ICMGG{expid}+{date}``                | output    | grid point output, if XIOS is not doing the writing            |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``ICMSH{expid}+{date}``                | output    | spherical harmonic output                                      |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``ICMUA{expid}+{date}``                | output    | upper atmosphere output                                        |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``rcf``                                | restart   | OpenIFS restart control file                                   |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``srf*``                               | restart   | OpenIFS restart, one per MPI task                              |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``waminfo``                            | restart   | WAM control file                                               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``BLS*, LAW*``                         | restart   | WAM restart files                                              |
++----------------------------------------+-----------+----------------------------------------------------------------+
+
+FESOM2
+======
+
++----------------------------------------+-----------+----------------------------------------------------------------+
+| File name                              | Type      | Description                                                    |
++========================================+===========+================================================================+
+| ``namelist.config``                    | ctrl      | general settings                                               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``namelist.oce``                       | ctrl      | ocean settings                                                 |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``namelist.ice``                       | ctrl      | sea ice settings                                               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``namelist.icepack``                   | ctrl      | Icepack sea ice thermodynamics settings                        |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``namelist.io``                        | ctrl      | output and diagnostic settings                                 |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``namelist.dyn``                       | ctrl      | dynamics settings                                              |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``namelist.tra``                       | ctrl      | tracer settings                                                |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``namelist.cvmix``                     | ctrl      | CVMix vertical mixing settings                                 |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``namelist.transit``                   | ctrl      | transient tracer settings                                      |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``namelist.forcing``                   | ctrl      | standalone forcing settings, unused when coupled               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``fesom``                              | bin       | FESOM2 executable                                              |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``fesom.clock``                        | restart   | the clock file. First number is the last written timestep,     |
+|                                        |           | needed when changing timestep between runs                     |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``fesom.{year}.oce.restart``           | restart   | ocean restart, a directory of NetCDF files                     |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``fesom.{year}.ice.restart``           | restart   | sea ice restart, a directory of NetCDF files                   |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``{var}.fesom.{year}.nc``              | output    | one file per output variable per year                          |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``{var}.fesom_{y0}-{y1}.nc``           | output    | the same, for a multi year output interval                     |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``fesom.mesh.diag.nc``                 | output    | mesh diagnostics written on the first run                      |
++----------------------------------------+-----------+----------------------------------------------------------------+
+
+OASIS3-MCT
+==========
+
++----------------------------------------+-----------+----------------------------------------------------------------+
+| File name                              | Type      | Description                                                    |
++========================================+===========+================================================================+
+| ``namcouple``                          | ctrl      | the coupling itself: exchange fields, remapping method,        |
+|                                        |           | frequencies, $NLOGPRT and $RUNTIME                             |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``grids.nc``                           | input     | cell centre longitudes and latitudes. Input for OpenIFS,       |
+|                                        |           | written by FESOM2                                              |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``masks.nc``                           | input     | land sea masks. Same asymmetry as grids.nc                     |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``areas.nc``                           | input     | cell areas. Same asymmetry as grids.nc                         |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``rmp_*.nc``                           | input     | remapping weights. Generated on the fly if absent, which is    |
+|                                        |           | slow on large grids                                            |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``rstas.nc``                           | restart   | atmosphere side coupling restart                               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``rstos.nc``                           | restart   | ocean side coupling restart                                    |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``vegin.nc``                           | restart   | vegetation side coupling restart                               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``rst_co2_ao.nc``                      | restart   | CO2 exchange with the ocean. AWI-ESM3-cc only                  |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``rst_co2_av.nc``                      | restart   | CO2 exchange with the vegetation. AWI-ESM3-cc only             |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``debug.root.{rank}``                  | log       | OASIS log from the root task, verbosity from $NLOGPRT          |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``debug.notroot.{rank}``               | log       | the same from non root tasks, usually near empty               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``nout.{rank}``                        | log       | OASIS parsing the namcouple                                    |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``timeline_{component}.nc``            | log       | per component event timeline: start and end of every PUT, GET, |
+|                                        |           | MAP and restart write                                          |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``load_balancing_info.txt``            | log       | the lucia analysis, only with use_lucia. OASIS3-MCT 5 writes   |
+|                                        |           | it directly                                                    |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``lucia.*``                            | log       | raw timing data on OASIS3-MCT 4, post-processed by the lucia   |
+|                                        |           | tool                                                           |
++----------------------------------------+-----------+----------------------------------------------------------------+
+
+XIOS
+====
+
+Applies to: AWI-CM3 v3.1 and later, and every AWI-ESM3. AWI-CM3 v3.0 has no IO server.
+
+The unsuffixed files configure OpenIFS output and the ``_fesom`` ones configure FESOM2 output. That is historical, OpenIFS was wired up first, and it catches people out: editing ``file_def.xml`` to change FESOM2 output silently changes OpenIFS output instead.
+
++----------------------------------------+-----------+----------------------------------------------------------------+
+| File name                              | Type      | Description                                                    |
++========================================+===========+================================================================+
+| ``iodef.xml``                          | ctrl      | master configuration. Names the contexts and tunes the two     |
+|                                        |           | level server                                                   |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``context_ifs.xml``                    | ctrl      | the OpenIFS context                                            |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``context_fesom.xml``                  | ctrl      | the FESOM2 context                                             |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``axis_def.xml``                       | ctrl      | vertical axes, including the pressure levels output is         |
+|                                        |           | interpolated onto                                              |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``domain_def.xml``                     | ctrl      | horizontal domains                                             |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``grid_def.xml``                       | ctrl      | grids, combining domains and axes                              |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``field_def.xml``                      | ctrl      | every field XIOS can write                                     |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``file_def.xml``                       | ctrl      | which fields go to which file, at which frequency              |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``*_fesom.xml``                        | ctrl      | the FESOM2 counterpart of each of the five files above         |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``xios.x``                             | bin       | IO server executable                                           |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``xios_client_{rank}.out``             | log       | one pair of .out and .err per client rank                      |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``xios_server{N}_{rank}.out``          | log       | one pair per server rank, N is the server level                |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``distribute_file_{context}.dat``      | log       | how the primary server spread the output files over the        |
+|                                        |           | secondary pools, with the estimated volume per file. Only      |
+|                                        |           | written with two level servers                                 |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``xios_registry.bin``                  | log       | internal registry dump                                         |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``xios_interpolation_weights_*.nc``    | output    | interpolation weights XIOS generated for its own regridding    |
++----------------------------------------+-----------+----------------------------------------------------------------+
+
+LPJ-GUESS
+=========
+
+Applies to: AWI-ESM3 and its variants. AWI-CM3 has no vegetation model.
+
++----------------------------------------+-----------+----------------------------------------------------------------+
+| File name                              | Type      | Description                                                    |
++========================================+===========+================================================================+
+| ``*.ins``                              | ctrl      | LPJ-GUESS instruction files. ``run_coupled_*.ins`` is the      |
+|                                        |           | entry point and includes the others                            |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``lpjg_steps.yaml``                    | ctrl      | time stepping and run configuration, written by esm_tools from |
+|                                        |           | a jinja template each leg                                      |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``guess``                              | bin       | LPJ-GUESS executable                                           |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``ece_gridlist_TCO{res}.txt``          | input     | the grid list. Written and read by LPJ-GUESS, nothing else     |
+|                                        |           | uses it                                                        |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``ndep``                               | input     | nitrogen deposition forcing                                    |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``landuse``                            | input     | land use forcing                                               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``fire``                               | input     | fire forcing                                                   |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``run{N}``                             | work      | one directory per LPJ-GUESS instance, each with its own copy   |
+|                                        |           | of the .ins files                                              |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``lpjg_state_{year}``                  | restart   | the LPJ-GUESS state                                            |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``guess.log``                          | log       | LPJ-GUESS run log                                              |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``LPJ-GUESS_monthlyoutput.txt``        | output    | monthly output. Usually empty here because output has already  |
+|                                        |           | been moved to outdata                                          |
++----------------------------------------+-----------+----------------------------------------------------------------+
+
+Runoff mapper
+=============
+
++----------------------------------------+-----------+----------------------------------------------------------------+
+| File name                              | Type      | Description                                                    |
++========================================+===========+================================================================+
+| ``namelist.runoffmapper``              | ctrl      | runoff mapper settings                                         |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``runoff_maps.nc``                     | input     | river basins and discharge areas                               |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``rnfma``                              | bin       | runoff mapper executable                                       |
++----------------------------------------+-----------+----------------------------------------------------------------+
+
+Job control and shared files
+============================
+
++----------------------------------------+-----------+----------------------------------------------------------------+
+| File name                              | Type      | Description                                                    |
++========================================+===========+================================================================+
+| ``hostfile_srun``                      | ctrl      | which executable runs on which core, by calling the prog       |
+|                                        |           | scripts                                                        |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``hostlist``                           | ctrl      | every MPI task and the node it runs on                         |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``prog_{component}.sh``                | ctrl      | pins the component's ranks to core slots with taskset, then    |
+|                                        |           | calls its script file. One per component                       |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``script_{component}.sh``              | ctrl      | sets OMP_NUM_THREADS and OASIS_OMP_NUM_THREADS, then launches  |
+|                                        |           | the executable                                                 |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``batch_system.env``                   | ctrl      | the environment the batch system was given                     |
++----------------------------------------+-----------+----------------------------------------------------------------+
+| ``lib``                                | work      | shared libraries the executables were built against            |
++----------------------------------------+-----------+----------------------------------------------------------------+
+
+Which coupling files can be generated on the fly
+================================================
 
 +---------------------------+---------------------------------------------------------------+
 | File name                 | Properties                                                    |
 +===========================+===============================================================+
-| Remapping files rmp_      | - Can be generated on the fly for low resolutions             |
+| Remapping files rmp\_     | - Can be generated on the fly for low resolutions             |
 |                           | - Do depend on OpenIFS & FESOM2 resolution                    |
 |                           | - Do depend on number of FESOM2 cores                         |
 |                           | - Do not depend of number of OpenIFS cores                    |
@@ -197,3 +316,5 @@ Detailed description of coupling files and which ones can be generated on the fl
 |                           | - Nedd to be linked in                                        |
 |                           | - Stay constant throughout an experiment                      |
 +---------------------------+---------------------------------------------------------------+
+
+Reordering for a new FESOM2 core count is done with the tool described in :doc:`how_to/coupling_oasis`, which permutes an existing set in seconds rather than regenerating it.
