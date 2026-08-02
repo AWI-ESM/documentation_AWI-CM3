@@ -40,6 +40,8 @@ Available SSPs are: ``SSP1-1.9``, ``SSP1-2.6``, ``SSP2-4.5``, ``SSP3-7.0``, ``SS
 
 The model also supports one percent increase per year and sudden four times incease of CO2 experiments through the additional logic switches ``L1PCTCO2`` and ``LA4XCO2``. The base value from which the the increase starts is set via ``NCMIPFIXYR``.
 
+For a multiple of the reference concentration other than those two fixed cases, set ``LANXCO2`` and give the factor in ``RNXCO2``. That is the usual way to specify a time slice whose CO2 is not a whole number of doublings.
+
 .. code-block:: Fortran
    
    &NAERAD
