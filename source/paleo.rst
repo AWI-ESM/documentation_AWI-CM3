@@ -157,7 +157,7 @@ Vegetation on AWI-ESM3
 
 Applies to: AWI-ESM3 and its variants. On AWI-CM3 the tool's vegetation is what the atmosphere uses, and none of this applies.
 
-With LPJ-GUESS coupled, OpenIFS takes vegetation type, cover and LAI from LPJ-GUESS on every exchange, for the low and the high vegetation tile both, and stops reading the monthly LAI climatology out of the ICMCL at all. What the tool writes from the biome map is therefore an initial state and nothing more, and the ICMCL limitation noted above stops mattering.
+LPJ-GUESS overrides the vegetation OpenIFS started with, so what the tool writes from the biome map is an initial state and nothing more, and the ICMCL limitation noted above stops mattering. :doc:`how_to/lpj_guess` says what it replaces and how the spinup works in general.
 
 What you do need is a vegetation state grown under the paleo climate, rather than a modern one carried in by accident:
 
