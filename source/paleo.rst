@@ -145,7 +145,7 @@ What the tool does not decide for you
 
 The boundary condition files are only part of an equilibrium climate setup. You still have to set:
 
-- **Greenhouse gases.** ``NAMECECMIP`` in the OpenIFS namelist, e.g. ``NCMIPFIXYR`` for a fixed year, or ``LANXCO2``/``RNXCO2`` for a multiple of the reference concentration.
+- **Greenhouse gases.** A time slice needs concentrations chosen for it rather than a scenario year. See :doc:`how_to/forcing` for the switches.
 - **Orbit.** For a time slice you almost always want a fixed orbit rather than the default ``variable_year``, either ``ORBMODE: 'fixed_year'`` with ``ORBIY``, or the PMIP4 parameters for the period entered directly under ``ORBMODE: 'fixed_parameters'``. See :ref:`orbital_parameters` for the modes and a worked LIG example.
 - **Sea surface conditions.** For a coupled run these come from FESOM2. For an AMIP run you need SST and sea ice forcing for the time slice; a modern or pre-industrial AMIP forcing set with a paleo land-sea mask is not an equilibrium climate.
 - **Vegetation.** The tool maps biomes to vegetation type, cover and LAI in the ICMGG. The monthly LAI cycle in the ICMCL is only relocated to match the new mask, not rebuilt from the biomes. On AWI-ESM3 none of that survives the first coupling exchange, see :ref:`paleo_vegetation` below.
