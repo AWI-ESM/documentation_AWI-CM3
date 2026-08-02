@@ -99,6 +99,10 @@ The orbital parameters (eccentricity, obliquity, and longitude of perihelion) ca
 - Under ``ORBMODE=fixed_year`` mode the orbital parameters are calculated according to Berger et al. 1978 for the fixed year set by the namelist variable ``ORBIY``. If you choose fixed year but set no year, the default is 1950.
 - Under ``fixed_parameters`` you have manual control over the parameters ``ORBECCEN``, ``ORBOBLIQ`` and ``ORBMVELP``. If you choose fixed parameters but set no parameters, the default ones are for 1950.
 
+``ORBMVELP`` is the longitude of perihelion measured from the moving vernal equinox, in degrees. That is the convention PMIP publishes in, so PMIP values go in unchanged and a mid-Holocene run takes ``0.87``.
+
+The model adds the 180 degrees itself, in ``yomorb.F90``, where ``mvelpp = (mvelp + 180.0)*degrad`` turns what you set into the internal ``ORBMVELPP``, so do not add it yourself. Both examples below are vernal equinox values: 102.7 for 1950, and 275.41 for the PMIP4 last interglacial.
+
 Example for manual control:
 
 .. code-block:: Fortran
