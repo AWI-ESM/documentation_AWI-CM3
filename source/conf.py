@@ -19,8 +19,8 @@
 
 # -- Project information -----------------------------------------------------
 
-project = u'AWI-CM3 documentation'
-copyright = u'2020, Jan Streffing'
+project = u'AWI-CM3 and AWI-ESM3 documentation'
+copyright = u'2020-2026, Jan Streffing'
 author = u'Jan Streffing'
 
 # The short X.Y version
@@ -108,7 +108,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'AWI-CM3documentationdoc'
+htmlhelp_basename = 'AWI-ESM3documentationdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -135,7 +135,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'AWI-CM3documentation.tex', u'AWI-CM3 documentation Documentation',
+    (master_doc, 'AWI-ESM3documentation.tex', u'AWI-CM3 and AWI-ESM3 Documentation',
      u'Jan Streffing', 'manual'),
 ]
 
@@ -145,7 +145,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'awi-cm3documentation', u'AWI-CM3 documentation Documentation',
+    (master_doc, 'awi-esm3documentation', u'AWI-CM3 and AWI-ESM3 Documentation',
      [author], 1)
 ]
 
@@ -156,8 +156,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'AWI-CM3documentation', u'AWI-CM3 documentation Documentation',
-     author, 'AWI-CM3documentation', 'One line description of project.',
+    (master_doc, 'AWI-ESM3documentation', u'AWI-CM3 and AWI-ESM3 Documentation',
+     author, 'AWI-ESM3documentation', 'Documentation of the AWI-CM3 and AWI-ESM3 model family.',
      'Miscellaneous'),
 ]
 
