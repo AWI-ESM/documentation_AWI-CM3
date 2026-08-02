@@ -1,8 +1,8 @@
 .. _how_to:
 
-******
-How to
-******
+*************
+How-to guides
+*************
 
 Recipes for the tasks that come up while running the model, grouped by the component they act on. A section that does not apply to every setup opens with an ``Applies to:`` line.
 
