@@ -108,6 +108,17 @@ Check that the model used it
 
 Almost nothing checks this for you, so check the file before you submit. ``ncdump -v co2 yourfile.nc | tail`` costs a second and catches the case where you edited the wrong gas, the wrong sector or the wrong years.
 
+Afterwards, grep ``NODE.001_01`` for ``ECE_CMIP_GHG``. It prints the full path of the file it opened and the concentration it took out of it:
+
+..  code-block:: bash
+
+  ECE_CMIP_GHG: Set JYEAR=MIN(JYEAR,2022)=        1850
+  /work/<project>/<user>/input/oifs-48r1/cmip-data//ghg/co2_input4MIPs_GHGConcentrations_CMIP_CR-CMIP-1-0-0_gm_1750-2022.nc
+  ZZ_YEARS=   182.5000
+  ZZCO2=   284.2973
+
+The path is the check that matters. If it is not your directory, the namelist change did not take, and ``ZZCO2`` then tells you which value the run is actually using.
+
 The one thing the model does catch is a name it cannot find, and it does so at startup rather than silently falling back:
 
 ..  code-block:: bash
@@ -120,7 +131,7 @@ A scenario name that does not exist fails the same way:
 
   ECE_CMIP_GHG : unknown CMIP6 scenario
 
-Wrong values in a file with the right name are not caught by anything. The run starts, finishes and is wrong, so the ``ncdump`` is the only check that matters.
+Wrong values in a file with the right name abort nothing. The run starts, finishes and is wrong, which is why the two checks above are worth the minute they cost.
 
 Control Aerosol Scaling
 =======================
