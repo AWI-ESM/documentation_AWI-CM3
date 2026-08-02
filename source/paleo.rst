@@ -36,6 +36,12 @@ This catches people out. The mask is taken from the ocean model grid when one is
 
 So for a coupled paleo run you need a FESOM2 mesh built for that time slice. Pointing a coupled configuration at a modern mesh gives you modern geography no matter what the reconstruction says. If you have no paleo mesh yet, an AMIP setup is the way to get the atmosphere side moving.
 
+If the mesh has ice shelf cavities, set ``ocean.has_ice_cavities`` in the tool config. It has no default and the tool will not start without it. With it on, the ocean boundary is built from the coastal and calving front edges and the cavity nodes come out as land, so the atmosphere sees an ice shelf rather than open water. The tool reports ``Cavity nodes:`` with the count, which is the quickest confirmation that it read the mask you meant.
+
+Keep that setting and the FESOM2 ``use_cavity`` namelist switch in agreement yourself, because nothing checks them against each other. Either way round the mask that comes out is internally consistent, so a disagreement produces a model that runs and puts open ocean under an ice shelf, or the reverse.
+
+Cavities have so far only been run for pre-industrial, historic and transient experiments. Nobody has taken the cavity path through a paleo time slice yet, so expect to find rough edges rather than a worn track.
+
 The environment
 ===============
 
@@ -142,7 +148,28 @@ The boundary condition files are only part of an equilibrium climate setup. You 
 - **Greenhouse gases.** ``NAMECECMIP`` in the OpenIFS namelist, e.g. ``NCMIPFIXYR`` for a fixed year, or ``LANXCO2``/``RNXCO2`` for a multiple of the reference concentration.
 - **Orbit.** For a time slice you almost always want a fixed orbit rather than the default ``variable_year``, either ``ORBMODE: 'fixed_year'`` with ``ORBIY``, or the PMIP4 parameters for the period entered directly under ``ORBMODE: 'fixed_parameters'``. See :ref:`orbital_parameters` for the modes and a worked LIG example.
 - **Sea surface conditions.** For a coupled run these come from FESOM2. For an AMIP run you need SST and sea ice forcing for the time slice; a modern or pre-industrial AMIP forcing set with a paleo land-sea mask is not an equilibrium climate.
-- **Vegetation.** The tool maps biomes to vegetation type, cover and LAI in the ICMGG. The monthly LAI cycle in the ICMCL is only relocated to match the new mask, not rebuilt from the biomes.
+- **Vegetation.** The tool maps biomes to vegetation type, cover and LAI in the ICMGG. The monthly LAI cycle in the ICMCL is only relocated to match the new mask, not rebuilt from the biomes. On AWI-ESM3 none of that survives the first coupling exchange, see :ref:`paleo_vegetation` below.
+
+.. _paleo_vegetation:
+
+Vegetation on AWI-ESM3
+======================
+
+Applies to: AWI-ESM3 and its variants. On AWI-CM3 the tool's vegetation is what the atmosphere uses, and none of this applies.
+
+With LPJ-GUESS coupled, OpenIFS takes vegetation type, cover and LAI from LPJ-GUESS on every exchange, for the low and the high vegetation tile both, and stops reading the monthly LAI climatology out of the ICMCL at all. What the tool writes from the biome map is therefore an initial state and nothing more, and the ICMCL limitation noted above stops mattering.
+
+What you do need is a vegetation state grown under the paleo climate, rather than a modern one carried in by accident:
+
+- Run OpenIFS in AMIP mode on the paleo boundary conditions to produce the forcing. Runscripts are in ``esm_tools/runscripts/oifsamip/``.
+- Run 2000 years of standalone LPJ-GUESS on that forcing, with the ``lpjg-spinup`` setup.
+- Use the resulting state as the LPJ-GUESS restart of the coupled run.
+
+Run the spinup as a single cold start job rather than chunking it, because the restart path runs out of memory:
+
+..  code-block:: bash
+
+  Error in GUTIL library: out of memory
 
 Using the files in a runscript
 ==============================
@@ -206,5 +233,5 @@ Known limitations
 =================
 
 - The land-sea mask is interpolated from the 1 degree reconstruction by nearest neighbour, which systematically widens coastlines compared with the conservative remapping the older bash workflow used.
-- The ICMCL monthly LAI is relocated, not rebuilt from the reconstruction biomes.
+- The ICMCL monthly LAI is relocated, not rebuilt from the reconstruction biomes. This bites AWI-CM3 only; on AWI-ESM3 the field is never read, see :ref:`paleo_vegetation`.
 - ``calnoro`` needs a separately compiled Fortran binary. Without it the subgrid-scale orography stays that of the template, which is inconsistent with a modified topography.
