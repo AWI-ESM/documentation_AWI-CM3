@@ -71,6 +71,57 @@ Control is analogous to CMIP6 but we use ``LCMIP5``, ``CMIP5DATADIR``, and ``NRC
 
 For a more detailed look at the use of these forcing consult the source code file ``src/ifs/climate/updrgas.F90``
 
+Supply your own greenhouse gas time series
+==========================================
+
+Applies to: everything except AWI-ESM3-cc, where CO2 is a prognostic tracer and is not read from a concentration file at all.
+
+There is no namelist entry that takes a filename. OpenIFS builds the name it wants from the scenario switch and the simulation year, and then looks for exactly that name. So a custom series is not a setting, it is a file you put where the model will look, under the name the model will construct.
+
+The recipe is the same for all three CMIP generations. Copy the pool directory somewhere you can write, replace the values in the file for the gas and years you care about, and point the data directory at your copy:
+
+.. code-block:: yaml
+
+   oifs:
+       add_namelist_changes:
+           fort.4:
+               NAERAD:
+                   CMIP6DATADIR: '/work/<project>/<user>/input/my-cmip6-data'
+
+Leave the file names alone. Renaming a file is the one thing that cannot work, because the model is not reading a name you gave it.
+
+What differs is which switch drives the name and what you are editing:
+
+- **CMIP5**, driven by ``NRCP``, cy43r3 only. Plain text, one row per year, columns ``YEAR CO2 CH4 N2O CFC11 CFC12``. Edit it in any editor. The names are fixed: ``ghg_histo.txt`` for the historical case, and ``ghg_rcp3PD.txt``, ``ghg_rcp45.txt``, ``ghg_rcp60.txt`` or ``ghg_rcp85.txt`` for the RCPs.
+- **CMIP6**, driven by ``SSPNAME``, both cycles. One NetCDF per gas, holding ``mole_fraction_of_<gas>_in_air(time, sector)``. Sector 0 is global, 1 is the northern hemisphere and 2 the southern, and all three are read, so change all three unless you actually want a hemispheric gradient.
+- **CMIP7**, driven by ``SCENARIONAME``, cy48r1 only. One NetCDF per gas, global mean only, so the variable is simply ``co2(time)``, ``ch4(time)`` and so on. These sit under ``<CMIP7DATADIR>/ghg/ScenarioMIP/`` rather than directly in the data directory.
+
+For the NetCDF cases the edit itself is one command. To scale a series, or to write your own values in from a text file:
+
+.. code-block:: bash
+
+  ncap2 -s 'co2 = co2 * 2.0' co2_in.nc co2_out.nc
+  ncap2 -s 'mole_fraction_of_carbon_dioxide_in_air(:,0) = 400.0' co2_in.nc co2_out.nc
+
+Check that the model used it
+----------------------------
+
+Almost nothing checks this for you, so check the file before you submit. ``ncdump -v co2 yourfile.nc | tail`` costs a second and catches the case where you edited the wrong gas, the wrong sector or the wrong years.
+
+The one thing the model does catch is a name it cannot find, and it does so at startup rather than silently falling back:
+
+..  code-block:: bash
+
+  ECE_CMIP_GHG: No such file or directory
+
+A scenario name that does not exist fails the same way:
+
+..  code-block:: bash
+
+  ECE_CMIP_GHG : unknown CMIP6 scenario
+
+Wrong values in a file with the right name are not caught by anything. The run starts, finishes and is wrong, so the ``ncdump`` is the only check that matters.
+
 Control Aerosol Scaling
 =======================
 
