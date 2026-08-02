@@ -26,6 +26,10 @@ OpenIFS
 +----------------------------------------+-----------+----------------------------------------------------------------+
 | ``ifsdata``                            | input     | folder of default gas and aerosol climatologies                |
 +----------------------------------------+-----------+----------------------------------------------------------------+
+| ``composition``                        | input     | folder holding ``onlinedust_v4_rmp.nc``, the online dust       |
+|                                        |           | climatology. OpenIFS on cy48r1 opens it at init whatever the   |
+|                                        |           | MIP                                                            |
++----------------------------------------+-----------+----------------------------------------------------------------+
 | ``{res}_{trunc}``                      | input     | folder of GRIB climate fields for that grid. The suffix is the |
 |                                        |           | spectral truncation: ``_2`` linear, ``_3`` quadratic, ``_4``   |
 |                                        |           | cubic octahedral, so ``319_4`` is TCO319                       |
@@ -244,8 +248,10 @@ Applies to: AWI-ESM3 and its variants. AWI-CM3 has no vegetation model.
 +----------------------------------------+-----------+----------------------------------------------------------------+
 | ``guess.log``                          | log       | LPJ-GUESS run log                                              |
 +----------------------------------------+-----------+----------------------------------------------------------------+
-| ``LPJ-GUESS_monthlyoutput.txt``        | output    | monthly output. Usually empty here because output has already  |
-|                                        |           | been moved to outdata                                          |
+| ``LPJ-GUESS_monthlyoutput.txt``        | output    | the monthly LAI and vegetation fractions handed to OpenIFS.    |
+|                                        |           | Written by rank 0 on 31 December only, and not during LPJ-     |
+|                                        |           | GUESS spinup, so a leg that does not reach the end of a year   |
+|                                        |           | leaves it empty. That is not a fault                           |
 +----------------------------------------+-----------+----------------------------------------------------------------+
 
 Runoff mapper
