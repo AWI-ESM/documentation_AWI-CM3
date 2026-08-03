@@ -198,6 +198,31 @@ The resulting anomaly of top of the atmosphere insolation shows the expected ano
 .. image:: ../releases/3.1/insolation_anomaly_LIG-PI_openIFS.png
    :width: 600
 
+Accelerate the orbit
+--------------------
+
+``variable_year`` advances the orbit exactly one year per model year, and ``NAMORB`` has no acceleration factor, so an accelerated orbit is not something you switch on. What you do instead is hold the orbit fixed within a leg and step it between legs, which works because esm_tools rewrites ``fort.4`` for every leg:
+
+.. code-block:: yaml
+
+   oifs:
+       orb_year_0: -9000        # orbital year at the start of the experiment
+       orb_accel: 10            # orbital years per model year
+       add_namelist_changes:
+           fort.4:
+               NAMORB:
+                   LCORBMD: true
+                   ORBMODE: 'fixed_year'
+                   ORBIY: "$(( ${oifs.orb_year_0} + (${start_date!year} - ${general.initial_date!year}) * ${oifs.orb_accel} ))"
+
+OpenIFS then computes the Berger 1978 parameters for that year itself, which is the same solution ``variable_year`` would have used. The orbit is constant inside a leg and jumps at each leg boundary, so keep the legs short enough that the jump stays smaller than the signal you are looking for.
+
+Deriving the year from the dates rather than from ``${general.run_number}`` matters, because then a restart or a change of leg length does not shift the orbit under you.
+
+Every leg prints a ``MODULE YOMORB`` block into ``NODE.001_01`` giving ``ORBMODE``, the ``ORBIY`` it used, and the eccentricity, obliquity and perihelion derived from it. Compare ``ORBIY`` between two consecutive legs, because that is the one thing worth checking: if it has not moved, the orbit is not stepping and every leg is running the same one.
+
+This has been checked in configuration only. The namelist comes out right, ``ORBIY = -9000`` on the first leg and ``-8900`` ten model years later at an acceleration of ten, but no production run has used it yet.
+
 Comparison of PI (1850) insolation for various relevant models
 --------------------------------------------------------------
 Differences between ECHAM6 and openIFS generated insolation can be deemed negligibly small. There is an overall offset of both ECHAM6 and openIFS with respect to the insolation computed from the PMIP4 PI orbit settings - that question may deserve further investigation. Note that ECHAM6 computes their modern insolation based on an internal orbit solution, i.e. the orbital parameters are never explicitly provided to the model as a forcing.
