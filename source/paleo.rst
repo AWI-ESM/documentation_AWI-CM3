@@ -34,7 +34,7 @@ Where the land-sea mask comes from
 
 This catches people out. The mask is taken from the ocean model grid when one is configured, because for a coupled run the FESOM2 mesh defines where the ocean is. The reconstruction ``*_LSM_*.nc`` is only used when there is no ocean mesh, i.e. in AMIP mode.
 
-So for a coupled paleo run you need a FESOM2 mesh built for that time slice. Pointing a coupled configuration at a modern mesh gives you modern geography no matter what the reconstruction says. If you have no paleo mesh yet, an AMIP setup is the way to get the atmosphere side moving.
+So for a coupled paleo run you need a FESOM2 mesh built for that time slice, and it has to exist before the tool runs. Pointing a coupled configuration at a modern mesh gives you modern geography no matter what the reconstruction says. If you have no paleo mesh yet, an AMIP setup is the way to get the atmosphere side moving. See :ref:`ocean_mesh_first` for what building one involves.
 
 If the mesh has ice shelf cavities, set ``ocean.has_ice_cavities`` in the tool config. It has no default and the tool will not start without it. With it on, the ocean boundary is built from the coastal and calving front edges and the cavity nodes come out as land, so the atmosphere sees an ice shelf rather than open water. The tool reports ``Cavity nodes:`` with the count, which is the quickest confirmation that it read the mask you meant.
 
@@ -96,6 +96,21 @@ Set the cycle explicitly and the tool will cross-check it against the input file
     model_cycle: "48r1"    # "43r3", "48r1" or "auto"
 
 ``auto`` detects the cycle from the input ICMGG. An explicit value is safer: it turns a wrong input file into an error message from the tool rather than an abort from the model an hour later.
+
+.. _ocean_mesh_first:
+
+The ocean mesh comes first
+==========================
+
+Applies to: coupled runs. In AMIP mode there is no ocean mesh and the reconstruction land-sea mask is used directly.
+
+A time slice with a different geography starts on the ocean side. The FESOM2 mesh is built for the reconstruction first, and the OpenIFS land-sea mask is derived from it by the tool described above. Doing it the other way round leaves the atmosphere and the ocean disagreeing about where the coast is.
+
+Sea level is a property of the mesh rather than a field you set, and the ocean is not initialised from a modified restart. There is no procedure for editing an existing restart into a new geography: you cold start from climatology on the new mesh and spin up.
+
+The method is published in full, and open access, in `Matos et al. (2026) <https://doi.org/10.1016/j.gloplacha.2025.105196>`_, including the anomaly method used for bathymetry, the constraints the mesh has to satisfy and the spin up lengths. What ocp-tool does is the atmosphere side of it.
+
+Generating the mesh itself happens before any of this and is not part of ocp-tool. Where that pipeline lives is not written down here yet.
 
 Level 2: a new time slice
 =========================
